@@ -1,15 +1,15 @@
 type Project {
   id: ID! @unique
-  name: String!
   createdAt: DateTime!
-  addBy: User!
   description: String!
+  name: String!
+  addBy: User
 }
 
 type User {
   id: ID! @unique
   name: String!
-  email: String! @unique
+  studentId: String! @unique
   password: String!
   projects: [Project!]!
 }
