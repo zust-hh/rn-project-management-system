@@ -1,7 +1,7 @@
 scalar DateTime
 
 type Query {
-  feed(filter: String, skip: Int, first: Int, orderBy: ProjectOrderByInput): [Project]!
+  feed(filter: String, skip: Int, first: Int, orderBy: ProjectOrderByInput): Feed!
 }
 
 enum ProjectOrderByInput {
@@ -9,16 +9,20 @@ enum ProjectOrderByInput {
   createdAt_DESC
 }
 
-# type Feed {
-#   links: [Link!]!
-#   count: Int!
-# }
+type Feed {
+  projects: [Project!]!
+  count: Int!
+}
 
 type Mutation {
   post(name: String!, description: String!): Project!
   signup(studentId: String!, password: String!, name: String!): AuthPayload
   login(studentId: String!, password: String!): AuthPayload
 #   vote(linkId: ID!): Vote!
+}
+
+type Subscription {
+  newProject: Project
 }
 
 type AuthPayload {
