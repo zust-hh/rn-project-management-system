@@ -2,17 +2,17 @@ import React from "react";
 import { createAppContainer, createBottomTabNavigator } from "react-navigation";
 
 import {
-  HomeScreen,
+  ProjectListScreen,
   SearchScreen,
   FavoritesScreen,
-  ProfileScreen
+  UserHomeScreen
 } from "../screens";
 
 import { Icon, TabBar } from '../components';
 
 const TabNavigator = createBottomTabNavigator({
-  HomeScreen: {
-    screen: HomeScreen,
+  ProjectListScreen: {
+    screen: ProjectListScreen,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => <Icon name="home" color={tintColor} />
     }
@@ -29,8 +29,8 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => <Icon name="favorites" color={tintColor} />
     }
   },
-  ProfileScreen: {
-    screen: ProfileScreen,
+  UserHomeScreen: {
+    screen: UserHomeScreen,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => <Icon name="profile" color={tintColor} />
     }

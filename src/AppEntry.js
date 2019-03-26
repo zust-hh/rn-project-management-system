@@ -7,7 +7,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { Router } from "./router";
 
 const httpLink = createHttpLink({
-    uri: 'http://30.11.220.73:4000'
+    uri: 'http://30.11.220.62:4000'
 })
 
 const client = new ApolloClient({

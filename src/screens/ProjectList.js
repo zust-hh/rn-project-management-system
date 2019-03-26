@@ -2,22 +2,9 @@ import React from "react";
 import { View, Text } from "react-native";
 import { NavigationBar, Title, DropDownMenu, ListView, ImageBackground, Tile, Subtitle, Divider, Screen } from '@shoutem/ui';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
-const FEED_QUERY = gql`
-  {
-    feed {
-      links {
-        id
-        createdAt
-        url
-        description
-      }
-    }
-  }
-`
-
-export default class Home extends React.Component {
+import gql from '../gql';
+export default class ProjectList extends React.Component {
   static navigationOptions = {
     header: null
   }
@@ -26,41 +13,8 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       filters: [
-        { name: 'Filter', value: 'Filter' },
-        { name: 'Sport', value: 'Sport' },
-        { name: 'Food', value: 'Food' },
-      ],
-      restaurants: [
-        {
-          "name": "Gaspar Brasserie",
-          "address": "185 Sutter St, San Francisco, CA 94109",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-1.jpg" },
-        },
-        {
-          "name": "Chalk Point Kitchen",
-          "address": "527 Broome St, New York, NY 10013",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-2.jpg" },
-        },
-        {
-          "name": "Kyoto Amber Upper East",
-          "address": "225 Mulberry St, New York, NY 10012",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-3.jpg" },
-        },
-        {
-          "name": "Sushi Academy",
-          "address": "1900 Warner Ave. Unit A Santa Ana, CA",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-4.jpg" },
-        },
-        {
-          "name": "Sushibo",
-          "address": "35 Sipes Key, New York, NY 10012",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-5.jpg" },
-        },
-        {
-          "name": "Mastergrill",
-          "address": "550 Upton Rue, San Francisco, CA 94109",
-          "image": { "url": "https://shoutem.github.io/static/getting-started/restaurant-6.jpg" },
-        }
+        { name: '全部', value: '全部' },
+        { name: '我的', value: '我的' },
       ],
     }
   }
@@ -74,7 +28,7 @@ export default class Home extends React.Component {
         >
           {
             data.length !== 0 ? <Tile>
-              <Title styleName="md-gutter-bottom">{data.url}</Title>
+              <Title styleName="md-gutter-bottom">{data.name}</Title>
               <Subtitle styleName="sm-gutter-horizontal">{data.description}</Subtitle>
             </Tile> : null
           }
@@ -106,18 +60,17 @@ export default class Home extends React.Component {
           }
           styleName="inline"
         />
-        <Query query={FEED_QUERY}>
+        <Query query={gql.FEED_QUERY}>
           {({ loading, error, data }) => {
             return (
               <ListView
                 loading={loading}
-                data={loading ? [] : data.feed.links}
+                data={loading ? [] : data.feed.projects}
                 renderRow={this.renderRow}
               />
             )
           }}
         </Query>
-
       </Screen>
     );
   }
