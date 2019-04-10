@@ -1,9 +1,12 @@
 import React from "react";
 import { Text } from "react-native";
 import { NavigationBar, Title, ImageBackground, Tile, Subtitle, Divider, Screen, Button, View } from '@shoutem/ui';
+import { SwitchNavigator } from 'react-navigation';
+import Login from './Login';
 import { Query } from 'react-apollo';
 
 import gql from '../gql';
+
 export default class UserHome extends React.Component {
     static navigationOptions = {
         header: null
@@ -12,10 +15,6 @@ export default class UserHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            filters: [
-                { name: '全部', value: '全部' },
-                { name: '我的', value: '我的' },
-            ],
         }
     }
 
@@ -39,6 +38,7 @@ export default class UserHome extends React.Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <Screen style={{ marginTop: 32 }} >
                 <NavigationBar
@@ -52,8 +52,9 @@ export default class UserHome extends React.Component {
                     <View>
                         <Button
                             style={{ width: 150, height: 50 }}
+                            onPress={() => navigate('Login')}
                         >
-                            <Text>login</Text>
+                            <Text>Login</Text>
                         </Button>
                     </View>
                 </ImageBackground>
@@ -61,3 +62,10 @@ export default class UserHome extends React.Component {
         );
     }
 }
+
+// const simpleApp = createSwitchNavigator({
+//     UserHome: { screen: UserHome },
+//     Login: { screen: Login },
+// });
+
+// export default createAppContainer(simpleApp);

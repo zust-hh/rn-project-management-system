@@ -1,7 +1,60 @@
 scalar DateTime
 
-type Query {
-  feed(filter: String, skip: Int, first: Int, orderBy: ProjectOrderByInput): Feed!
+type Project {
+  id: ID!
+  createdAt: DateTime!
+  description: String!
+  name: String!
+  addBy: User
+  updateAt: DateTime
+  tutor: User
+  type: Int
+  steps: [Step]
+  state: Int
+  member: [User]
+  college: Int
+  viewNum: Int
+  favoriteUser: [User]
+}
+
+type User {
+  id: ID!
+  name: String!
+  idNumber: String!
+  password: String!
+  addByProjects: [Project]
+  memberProjects: [Project]
+  type: Int
+  favorite: [Project]
+  message: [Message]
+  follow: [User]
+  class: String
+  tutorProjects: [Project]
+  unreadMessage: [Message]
+  readMessage: [Message]
+}
+
+type Step {
+  id: ID!
+  name: String!
+  finishTime: DateTime!
+  updateAt: DateTime
+  charge: User
+  state: Int
+}
+
+type Message {
+  id: ID!
+  addBy: User!
+  createdAt: DateTime!
+  article: String
+  unread: [User]
+  read: [User]
+}
+
+type ProjectList {
+  projects: [Project!]!
+  count: Int!
 }
 
 enum ProjectOrderByInput {
@@ -9,20 +62,28 @@ enum ProjectOrderByInput {
   createdAt_DESC
 }
 
-type Feed {
-  projects: [Project!]!
+type UserList {
+  users: [User!]!
   count: Int!
 }
 
-type Mutation {
-  post(name: String!, description: String!): Project!
-  signup(studentId: String!, password: String!, name: String!): AuthPayload
-  login(studentId: String!, password: String!): AuthPayload
-#   vote(linkId: ID!): Vote!
+enum UserOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
 }
 
-type Subscription {
-  newProject: Project
+type UserHome {
+  projectList: [Project!]!
+}
+
+type MessageList {
+  messages: [Message!]!
+  count: Int!
+}
+
+enum MessageOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type AuthPayload {
@@ -30,18 +91,24 @@ type AuthPayload {
   user: User
 }
 
-type Project {
-  id: ID!
-  createdAt: DateTime!
-  description: String!
-  name: String!
-  addBy: User
+type Query {
+  projectList(filter: String, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
+  # project(id: String): Project!
+  # userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
+  # userHome(id: String): UserHome!
+  # messageList(filter: String, skip: Int, first: Int, orderBy: MessageOrderByInput): MessageList!
 }
 
-type User {
-  id: ID!
-  name: String!
-  studentId: String!
-  password: String!
-  projects: [Project!]!
+type Mutation {
+  signup(idNumber: String!, password: String!, name: String!): AuthPayload
+  login(idNumber: String!, password: String!): AuthPayload
+  # chargeFavorite(userId: String!, projectId: String!): Boolean
+  # changeProject(project: Project!): Project!
+  # changeFollow(userId: String!, followUserId: String!): Boolean
+  # readMessage(userId: String!, messageId: String!): Boolean
+  # newMessage(message: Message): Boolean
+}
+
+type Subscription {
+  newProject: Project
 }

@@ -1,15 +1,21 @@
-feed = async (root, args, context, info) => {
+const { APP_SECRET, getUserId } = require('../utils')
+
+projectList = async (root, args, context, info) => {
+    // const userId = getUserId(context);
     const where = args.filter ? {
         OR: [
             { description_contains: args.filter },
-            { name_contains: args.fliter }
+            { name_contains: args.filter },
+            { addBy: {
+                idNumber_contains: args.filter
+            } }
         ],
     } : {}
     const projects = await context.prisma.projects({
         where,
         skip: args.skip,
         first: args.first,
-        orderBy: args.orderBy
+        orderBy: args.orderBy,
     })
     const count = await context.prisma
         .projectsConnection({
@@ -17,6 +23,7 @@ feed = async (root, args, context, info) => {
         })
         .aggregate()
         .count()
+
     return {
         projects,
         count
@@ -24,5 +31,5 @@ feed = async (root, args, context, info) => {
 }
 
 module.exports = {
-    feed,
+    projectList,
 }

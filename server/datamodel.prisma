@@ -3,13 +3,49 @@ type Project {
   createdAt: DateTime!
   description: String!
   name: String!
-  addBy: User
+  addBy: User @relation(name: "Project_addBy")
+  updateAt: DateTime
+  tutor: User @relation(name: "Porject_tutor")
+  type: Int
+  steps: [Step]
+  state: Int
+  member: [User] @relation(name: "Project_member")
+  college: Int
+  viewNum: Int
+  favoriteUser: [User] @relation(name: "Project_favoriteUser")
 }
 
 type User {
   id: ID! @unique
   name: String!
-  studentId: String! @unique
+  idNumber: String!
   password: String!
-  projects: [Project!]!
+  addByProjects: [Project] @relation(name: "Project_addBy")
+  memberProjects: [Project] @relation(name: "Project_member")
+  type: Int
+  favorite: [Project] @relation(name: "Project_favoriteUser")
+  message: [Message] @relation(name: "User_message")
+  follow: [User]
+  class: String
+  tutorProjects: [Project] @relation(name: "Porject_tutor")
+  unreadMessage: [Message] @relation(name: "User_unreadMessage")
+  readMessage: [Message] @relation(name: "User_readMessage")
+}
+
+type Step {
+  id: ID! @unique
+  name: String!
+  finishTime: DateTime!
+  updateAt: DateTime
+  charge: User
+  state: Int
+}
+
+type Message {
+  id: ID! @unique
+  addBy: User! @relation(name: "User_message")
+  createdAt: DateTime!
+  article: String
+  unread: [User] @relation(name: "User_unreadMessage")
+  read: [User] @relation(name: "User_readMessage")
 }

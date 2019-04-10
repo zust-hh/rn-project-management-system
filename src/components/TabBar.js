@@ -10,12 +10,11 @@ import posed from "react-native-pose";
 import { EventEmitter } from "events";
 
 const windowWidth = Dimensions.get("window").width;
-const tabWidth = windowWidth / 4;
+const tabWidth = windowWidth / 3;
 const SpotLight = posed.View({
   route0: { x: 0 },
   route1: { x: tabWidth },
-  route2: { x: tabWidth * 2 },
-  route3: { x: tabWidth * 3 }
+  route2: { x: tabWidth * 2 }
 });
 
 const Scaler = posed.View({
