@@ -19,13 +19,16 @@ export default class Login extends React.Component {
   }
 
   _confirm = async data => {
-    const { token } = data.login;
-    this._saveUserData(token);
-    this.props.navigation.navigate('UserHomeScreen');
+    const { goBack, state } = this.props.navigation;
+    const { token, user } = data.login;
+    this._saveUserData(token, user.type);
+    state.params.callBack(user.type);
+    goBack();
   }
 
-  _saveUserData = async token => {
+  _saveUserData = async (token, userType) => {
     await AsyncStorage.setItem('auth-token', token);
+    await AsyncStorage.setItem('user-type', userType);
   }
 
   render() {
@@ -57,7 +60,6 @@ export default class Login extends React.Component {
               </Button>
             )}
           </Mutation>
-
         </View>
       </Screen>
     );

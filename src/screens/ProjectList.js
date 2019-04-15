@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { NavigationBar, Title, DropDownMenu, ListView, ImageBackground, Tile, Subtitle, Divider, Screen, View, Button } from '@shoutem/ui';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 
 import gql from '../gql';
 export default class ProjectList extends React.Component {
@@ -11,13 +11,60 @@ export default class ProjectList extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = {
       filters: [
         { name: '全部', value: '全部' },
         { name: '我的', value: '我的' },
       ],
+      attribution: 0,
+      loginIn: false
     }
+  }
+
+  findInArray = (x, arr) => {
+    if (arr.length > 0) {
+      arr.map((item) => {
+        if (x.id === item.id) return true
+      })
+    }
+    return false
+  }
+
+  // 收藏之后的更新
+  _updateCacheAfterCollection = (store, collectionProject, projectId) => {
+    const { attribution } = this.state;
+    const data = store.readQuery({
+      query: gql.PROJECTLIST_QUERY,
+      variables: { attribution },
+    })
+
+    const favoritedProject = data.projectList.projects.find(project => project.id === projectId)
+    data.projectList.myFavoriteProjects = [...data.projectList.myFavoriteProjects, {
+      id: projectId,
+      __typename: "Project"
+    }]
+    favoritedProject.showFavorite = false
+    store.writeQuery({ query: gql.PROJECTLIST_QUERY, data })
+  }
+
+  _subscribeToUpdateProjects = subscribeToMore => {
+    subscribeToMore({
+      document: gql.UPDATE_PROJECTS_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const UpdateProject = subscriptionData.data.updateProject
+        const updatedProjectList = Object.assign({}, prev, {
+          projectList: {
+            projects: [...prev.projectList.projects, UpdateProject],
+            count: prev.projectList.projects.length,
+            myFavoriteProjects: [...prev.projectList.myFavoriteProjects, { id: UpdateProject.id }],
+            __typename: prev.projectList.__typename
+          }
+        })
+        console.log(updatedProjectList)
+        return updatedProjectList
+      }
+    })
   }
 
   renderRow = (data) => {
@@ -32,20 +79,34 @@ export default class ProjectList extends React.Component {
               <View styleName="horizontal space-between">
                 <Text>{data.type}</Text>
                 <View>
-                  <Text style={{ color: 'white' }}>hh</Text>
+                  <Text style={{ color: 'white' }}>{data.addBy.name}</Text>
                 </View>
               </View>
               <View styleName="horizontal space-between">
                 <View styleName="vertical">
                   <View styleName="horizontal">
                     <Text numberOfLines={2} style={{ color: 'white', width: 300 }}>{data.name}</Text>
-                    <Text style={{ color: 'white' }}>cg</Text>
+                    <Text style={{ color: 'white' }}>{data.tutor.name}</Text>
                   </View>
                   <Subtitle styleName="sm-gutter-horizontal" style={{ color: 'white' }}>{data.description}</Subtitle>
                 </View>
-                <Button>
-                  <Text>收藏</Text>
-                </Button>
+                {
+                  data.showFavorite ? <Mutation
+                    mutation={gql.FAVORITE_MUTATION}
+                    variables={{ projectId: data.id }}
+                    update={(store, { data: { collectionProject } }) =>
+                      this._updateCacheAfterCollection(store, collectionProject, data.id)
+                    }
+                  >
+                    {mutation => (
+                      <Button
+                        onPress={mutation}
+                      >
+                        <Text>收藏</Text>
+                      </Button>
+                    )}
+                  </Mutation> : null
+                }
               </View>
             </View> : null
           }
@@ -56,6 +117,7 @@ export default class ProjectList extends React.Component {
   }
 
   render() {
+    const { attribution } = this.state;
     return (
       <Screen style={{ marginTop: 32 }} >
         <NavigationBar
@@ -70,16 +132,33 @@ export default class ProjectList extends React.Component {
             <DropDownMenu
               options={this.state.filters}
               selectedOption={this.state.selectedFilter ? this.state.selectedFilter : this.state.filters[0]}
-              onOptionSelected={(filter) => this.setState({ selectedFilter: filter })}
+              onOptionSelected={(filter) => {
+                const attribution = this.state.selectedFilter === '全部' ? 0 : 1;
+                this.setState({
+                  selectedFilter: filter,
+                  attribution,
+                })
+              }}
               titleProperty="name"
               valueProperty="value"
             />
           }
           styleName="inline"
         />
-        <Query query={gql.PROJECTLIST_QUERY}>
-          {({ loading, error, data }) => {
-            console.log(data);
+        <Query
+          query={gql.PROJECTLIST_QUERY}
+          variables={{ attribution }}
+        >
+          {({ loading, error, data, subscribeToMore }) => {
+            this._subscribeToUpdateProjects(subscribeToMore)
+            if (data && data.projectList && data.projectList.projects.length > 0) {
+              const { projects, myFavoriteProjects } = data.projectList;
+              projects.map((project) => {
+                console.log(project.id, myFavoriteProjects)
+                project.showFavorite = !this.findInArray(project, myFavoriteProjects);
+              })
+            }
+
             return (
               <ListView
                 loading={loading}

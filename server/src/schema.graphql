@@ -54,6 +54,7 @@ type Message {
 
 type ProjectList {
   projects: [Project!]!
+  myFavoriteProjects: [Project!]!
   count: Int!
 }
 
@@ -92,7 +93,7 @@ type AuthPayload {
 }
 
 type Query {
-  projectList(filter: String, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
+  projectList(filter: String, attribution: Int, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
   # project(id: String): Project!
   # userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
   # userHome(id: String): UserHome!
@@ -102,7 +103,7 @@ type Query {
 type Mutation {
   signup(idNumber: String!, password: String!, name: String!): AuthPayload
   login(idNumber: String!, password: String!): AuthPayload
-  # chargeFavorite(userId: String!, projectId: String!): Boolean
+  collectionProject(projectId: String!): Project
   # changeProject(project: Project!): Project!
   # changeFollow(userId: String!, followUserId: String!): Boolean
   # readMessage(userId: String!, messageId: String!): Boolean
@@ -110,5 +111,6 @@ type Mutation {
 }
 
 type Subscription {
+  updateProject: Project
   newProject: Project
 }

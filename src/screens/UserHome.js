@@ -1,6 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { NavigationBar, Title, ImageBackground, Tile, Subtitle, Divider, Screen, Button, View } from '@shoutem/ui';
+import AsyncStorage from '@react-native-community/async-storage';
 import { SwitchNavigator } from 'react-navigation';
 import Login from './Login';
 import { Query } from 'react-apollo';
@@ -15,6 +16,7 @@ export default class UserHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userType: 0
         }
     }
 
@@ -37,6 +39,59 @@ export default class UserHome extends React.Component {
         );
     }
 
+    renderUserHome = (userType) => {
+        const { navigate } = this.props.navigation;
+        switch (userType) {
+            case 0: return <ImageBackground
+                styleName="large-banner"
+                source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+            >
+                <View>
+                    <Button
+                        style={{ width: 150, height: 50 }}
+                        onPress={() => navigate('Login', {
+                            page: 'UserHomeScreen',
+                            callBack: (userType) => {
+                                this.setState({
+                                    userType
+                                });
+                            }
+                        })}
+                    >
+                        <Text>Login</Text>
+                    </Button>
+                </View>
+            </ImageBackground>
+            case 2: 
+            case 1: return <View><ImageBackground
+                styleName="large-banner"
+                source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+            >
+                <View>
+                    <Button
+                        style={{ width: 150, height: 50 }}
+                        onPress={() => navigate('Login')}
+                    >
+                        <Text>student / teacher</Text>
+                    </Button>
+                </View>
+            </ImageBackground></View>
+            case 3: return <View><ImageBackground
+            styleName="large-banner"
+            source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+        >
+            <View>
+                <Button
+                    style={{ width: 150, height: 50 }}
+                    onPress={() => navigate('Login')}
+                >
+                    <Text>admin</Text>
+                </Button>
+            </View>
+        </ImageBackground></View>
+        }
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -45,19 +100,9 @@ export default class UserHome extends React.Component {
                     centerComponent={<Title>我的</Title>}
                     styleName="inline"
                 />
-                <ImageBackground
-                    styleName="large-banner"
-                    source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
-                >
-                    <View>
-                        <Button
-                            style={{ width: 150, height: 50 }}
-                            onPress={() => navigate('Login')}
-                        >
-                            <Text>Login</Text>
-                        </Button>
-                    </View>
-                </ImageBackground>
+                {
+                    this.renderUserHome(this.state.userType)
+                }
             </Screen>
         );
     }

@@ -49,8 +49,22 @@ login = async (parent, args, context, info) => {
     }
 }
 
+collectionProject = (root, args, context, info) => {
+    const userId = getUserId(context)
+    const { projectId } = args
+
+    return context.prisma.updateProject({
+        where: { id: projectId },
+        data: { favoriteUser: {
+            connect: {
+                id: userId
+            }
+        } }
+    })
+}
+
 module.exports = {
     signup,
     login,
-    // newProject,
+    collectionProject,
 }
