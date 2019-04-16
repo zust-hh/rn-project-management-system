@@ -22,12 +22,13 @@ export default class ProjectList extends React.Component {
   }
 
   findInArray = (x, arr) => {
+    let find = false
     if (arr.length > 0) {
       arr.map((item) => {
-        if (x.id === item.id) return true
+        if (x.id == item.id) find = true
       })
     }
-    return false
+    return find
   }
 
   // 收藏之后的更新
@@ -53,15 +54,19 @@ export default class ProjectList extends React.Component {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const UpdateProject = subscriptionData.data.updateProject
+        prev.projectList.projects.map((project) => {
+          if (project.id === UpdateProject.id) {
+            project.showFavorite = false
+          }
+        })
         const updatedProjectList = Object.assign({}, prev, {
           projectList: {
-            projects: [...prev.projectList.projects, UpdateProject],
+            projects: [...prev.projectList.projects],
             count: prev.projectList.projects.length,
-            myFavoriteProjects: [...prev.projectList.myFavoriteProjects, { id: UpdateProject.id }],
+            myFavoriteProjects: [...prev.projectList.myFavoriteProjects, { id: UpdateProject.id, __typename: "Project" }],
             __typename: prev.projectList.__typename
           }
         })
-        console.log(updatedProjectList)
         return updatedProjectList
       }
     })
@@ -154,9 +159,11 @@ export default class ProjectList extends React.Component {
             if (data && data.projectList && data.projectList.projects.length > 0) {
               const { projects, myFavoriteProjects } = data.projectList;
               projects.map((project) => {
-                console.log(project.id, myFavoriteProjects)
                 project.showFavorite = !this.findInArray(project, myFavoriteProjects);
               })
+            } else {
+              data.projectList = {}
+              data.projectList.projects = []
             }
 
             return (

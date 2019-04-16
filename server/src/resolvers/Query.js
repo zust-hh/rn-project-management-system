@@ -13,7 +13,7 @@ projectList = async (root, args, context, info) => {
             }
         ],
     } : {};
-    const projects = await context.prisma.projects({
+    let projects = await context.prisma.projects({
         where,
         skip: args.skip,
         first: args.first,
