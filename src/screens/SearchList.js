@@ -8,7 +8,7 @@ import { Query } from 'react-apollo';
 
 import gql from '../gql';
 
-export default class UserHome extends React.Component {
+export default class SearchList extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -18,6 +18,25 @@ export default class UserHome extends React.Component {
         this.state = {
             userType: 0
         }
+    }
+
+    renderRow = (data) => {
+        return (
+            <View>
+                <ImageBackground
+                    styleName="large-banner"
+                    source={{ uri: "https://shoutem.github.io/static/getting-started/restaurant-6.jpg" }}
+                >
+                    {
+                        data.length !== 0 ? <Tile>
+                            <Title styleName="md-gutter-bottom">{data.name}</Title>
+                            <Subtitle styleName="sm-gutter-horizontal">{data.description}</Subtitle>
+                        </Tile> : null
+                    }
+                </ImageBackground>
+                <Divider styleName="line" />
+            </View>
+        );
     }
 
     renderUserHome = (userType) => {

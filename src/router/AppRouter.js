@@ -1,9 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
 import ProjectList from '../screens/ProjectList';
-import Search from '../screens/ProjectList';
 import UserHome from '../screens/UserHome';
 import Login from '../screens/Login';
+import Search from '../screens/Search';
+import SearchList from '../screens/SearchList';
 
 import { Icon, TabBar } from '../components';
 
@@ -44,6 +45,9 @@ export const AppRouter = createStackNavigator(
     Login: {
       screen: Login
     },
+    SearchList: {
+      screen: SearchList
+    }
   },
   {
     // 快速定制导航条，新版识兔中所有的导航都是重写的，所以这里会将全部的导航置空

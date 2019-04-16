@@ -23,6 +23,28 @@ const PROJECTLIST_QUERY = gql`
 }
 `
 
+const HOTPROJECTLIST_QUERY = gql`
+  query HotProjectListQuery {
+    projectList(orderBy: viewNum_DESC) {
+      projects {
+        id
+        name
+        type
+        description
+        addBy {
+          name
+        }
+        tutor {
+          name
+        }
+      }
+      myFavoriteProjects {
+        id
+      }
+    }
+}
+`
+
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($idNumber: String!, $password: String!) {
     login(idNumber: $idNumber, password: $password) {
@@ -61,7 +83,8 @@ const UPDATE_PROJECTS_SUBSCRIPTION = gql`
 
 export default {
   PROJECTLIST_QUERY,
+  HOTPROJECTLIST_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
-  UPDATE_PROJECTS_SUBSCRIPTION
+  UPDATE_PROJECTS_SUBSCRIPTION,
 }

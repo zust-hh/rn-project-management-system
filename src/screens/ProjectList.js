@@ -32,7 +32,7 @@ export default class ProjectList extends React.Component {
   }
 
   // 收藏之后的更新
-  _updateCacheAfterCollection = (store, collectionProject, projectId) => {
+  _updateCacheAfterCollection = (store, projectId) => {
     const { attribution } = this.state;
     const data = store.readQuery({
       query: gql.PROJECTLIST_QUERY,
@@ -99,8 +99,8 @@ export default class ProjectList extends React.Component {
                   data.showFavorite ? <Mutation
                     mutation={gql.FAVORITE_MUTATION}
                     variables={{ projectId: data.id }}
-                    update={(store, { data: { collectionProject } }) =>
-                      this._updateCacheAfterCollection(store, collectionProject, data.id)
+                    update={(store) =>
+                      this._updateCacheAfterCollection(store, data.id)
                     }
                   >
                     {mutation => (
@@ -138,7 +138,7 @@ export default class ProjectList extends React.Component {
               options={this.state.filters}
               selectedOption={this.state.selectedFilter ? this.state.selectedFilter : this.state.filters[0]}
               onOptionSelected={(filter) => {
-                const attribution = this.state.selectedFilter === '全部' ? 0 : 1;
+                const attribution = this.state.selectedFilter && this.state.selectedFilter.name === '我的' ? 0 : 1;
                 this.setState({
                   selectedFilter: filter,
                   attribution,

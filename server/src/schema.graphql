@@ -61,6 +61,8 @@ type ProjectList {
 enum ProjectOrderByInput {
   createdAt_ASC
   createdAt_DESC
+  viewNum_ASC
+  viewNum_DESC
 }
 
 type UserList {
