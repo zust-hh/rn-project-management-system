@@ -1,66 +1,55 @@
 import React from "react";
-import { NavigationBar, Title, DropDownMenu, ListView, ImageBackground, Tile, Subtitle, Divider, Screen, View, Button, Text } from '@shoutem/ui';
+import { NavigationBar, Title, ImageBackground, Row, Icon, ListView, Tile, Subtitle, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
 import { Query, Mutation } from 'react-apollo';
 import gql from '../gql';
 
-// 收藏之后的更新
-_updateCacheAfterCollection = (store, projectId) => {
+// 关注之后的更新
+_updateCacheAfterFollow = (store, followUserId) => {
+  const { searchText } = this.state;
   const data = store.readQuery({
-      query: gql.PROJECTLIST_QUERY,
-      variables: { attribution: 0 },
+    query: gql.SEARCHUSERLIST_QUERY,
+    variables: { searchText },
   })
 
-  const favoritedProject = data.projectList.projects.find(project => project.id === projectId)
-  data.projectList.myFavoriteProjects = [...data.projectList.myFavoriteProjects, {
-      id: projectId,
-      __typename: "Project"
+  const followUser = data.userList.users.find(user => user.id === followUserId)
+  data.userList.myFollowUsers = [...data.userList.myFollowUsers, {
+    id: followUserId,
+    __typename: "Project"
   }]
-  favoritedProject.showFavorite = false
-  store.writeQuery({ query: gql.PROJECTLIST_QUERY, data })
+  followUser.showFollow = false
+  store.writeQuery({ query: gql.SEARCHUSERLIST_QUERY, data })
 }
 
 const UserCard = (data) => {
   return (
     <View>
-        {
-          data.length !== 0 ? <View styleName="space-between vertical fill-parent" style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: 24 }}>
-            <View styleName="horizontal space-between">
-              <Text>{data.type}</Text>
-              <View>
-                <Text style={{ color: 'white' }}>{data.addBy.name}</Text>
-              </View>
-            </View>
-            <View styleName="horizontal space-between">
-              <View styleName="vertical">
-                <View styleName="horizontal">
-                  <Text numberOfLines={2} style={{ color: 'white', width: 300 }}>{data.name}</Text>
-                  <Text style={{ color: 'white' }}>{data.tutor.name}</Text>
-                </View>
-                <Subtitle styleName="sm-gutter-horizontal" style={{ color: 'white' }}>{data.description}</Subtitle>
-              </View>
-              {
-                data.showFavorite ? <Mutation
-                  mutation={gql.FAVORITE_MUTATION}
-                  variables={{ projectId: data.id }}
-                  update={(store) =>
-                    _updateCacheAfterCollection(store, data.id)
-                  }
-                >
-                  {mutation => (
-                    <Button
-                      onPress={mutation}
-                    >
-                      <Text>收藏</Text>
-                    </Button>
-                  )}
-                </Mutation> : null
-              }
-            </View>
-          </View> : null
-        }
+      {
+        data.length !== 0 ?
+          <Row styleName="small">
+            <Text style={{ color: 'black' }}>{data.name}</Text>
+            <Text style={{ color: 'black' }}>{data.class}</Text>
+            {
+              data.showFollow ? <Mutation
+                mutation={gql.FOLLOW_MUTATION}
+                variables={{ followUserId: data.id }}
+                update={(store) =>
+                  _updateCacheAfterFollow(store, data.id)
+                }
+              >
+                {mutation => (
+                  <Icon
+                    styleName="disclosure"
+                    name="left-arrow"
+                    onPress={mutation} />
+                )}
+              </Mutation> : null
+            }
+
+          </Row> : null
+      }
       <Divider styleName="line" />
     </View>
   );
 }
 
-export default ProjectCard;
+export default UserCard;

@@ -1,6 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
-import { NavigationBar, Title, ImageBackground, Tile, Subtitle, Divider, Screen, Button, View } from '@shoutem/ui';
+import { NavigationBar, Title, ImageBackground, Tile, Subtitle, Divider, Screen, Button, View, Text } from '@shoutem/ui';
 import AsyncStorage from '@react-native-community/async-storage';
 import { SwitchNavigator } from 'react-navigation';
 import Login from './Login';
@@ -43,7 +42,7 @@ export default class UserHome extends React.Component {
                     </Button>
                 </View>
             </ImageBackground>
-            case 2: 
+            case 2:
             case 1: return <View><ImageBackground
                 styleName="large-banner"
                 source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
@@ -58,18 +57,18 @@ export default class UserHome extends React.Component {
                 </View>
             </ImageBackground></View>
             case 3: return <View><ImageBackground
-            styleName="large-banner"
-            source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
-        >
-            <View>
-                <Button
-                    style={{ width: 150, height: 50 }}
-                    onPress={() => navigate('Login')}
-                >
-                    <Text>admin</Text>
-                </Button>
-            </View>
-        </ImageBackground></View>
+                styleName="large-banner"
+                source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+            >
+                <View>
+                    <Button
+                        style={{ width: 150, height: 50 }}
+                        onPress={() => navigate('Login')}
+                    >
+                        <Text>admin</Text>
+                    </Button>
+                </View>
+            </ImageBackground></View>
         }
     }
 
@@ -81,9 +80,20 @@ export default class UserHome extends React.Component {
                     centerComponent={<Title>我的</Title>}
                     styleName="inline"
                 />
-                {
-                    this.renderUserHome(this.state.userType)
-                }
+                <Query
+                    query={gql.USERINFO_QUERY}
+                >
+                    {({ loading, error, data }) => {
+                        if (loading) {
+                            return (
+                                <Text>123</Text>
+                            )
+                        }
+                        return (
+                            this.renderUserHome(data.getUserInfo.type)
+                        )
+                    }}
+                </Query>
             </Screen>
         );
     }

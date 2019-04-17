@@ -60,12 +60,14 @@ userList = async (root, args, context, info) => {
         OR: [
             { name_contains: args.filter },
             { idNumber_contains: args.filter },
-            { addByProjects_some: {
-                OR: [
-                    { description_contains: args.filter },
-                    { name_contains: args.filter },
-                ],
-            } }
+            {
+                addByProjects_some: {
+                    OR: [
+                        { description_contains: args.filter },
+                        { name_contains: args.filter },
+                    ],
+                }
+            }
         ],
     } : {};
     let users = await context.prisma.users({
@@ -86,7 +88,7 @@ userList = async (root, args, context, info) => {
         .count()
 
     if (userId) {
-        for(let i = 0; i < users.length; i++) {
+        for (let i = 0; i < users.length; i++) {
             if (users[i].id == userId) {
                 myIndex = i;
             }
@@ -116,7 +118,20 @@ userList = async (root, args, context, info) => {
         count
     }
 }
+
+getUserInfo = async (root, args, context, info) => {
+    const myUserId = getUserId(context);
+    let user = args.userId ? await context.prisma.user({
+        id: args.userId
+    }) : await context.prisma.user({
+        id: myUserId
+    })
+
+    return user
+}
+
 module.exports = {
     projectList,
-    userList
+    userList,
+    getUserInfo
 }

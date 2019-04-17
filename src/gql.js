@@ -82,6 +82,27 @@ const SEARCHUSERLIST_QUERY = gql`
 }
 `
 
+const USERINFO_QUERY = gql`
+  query UserInfoQuery($userId: String) {
+    getUserInfo(userId: $userId) {
+      id
+      name
+      addByProjects {
+        id
+        name
+        steps {
+          name
+          state
+        }
+      }
+      type
+      unreadMessage {
+        id
+      }
+    }
+}
+`
+
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($idNumber: String!, $password: String!) {
     login(idNumber: $idNumber, password: $password) {
@@ -141,6 +162,7 @@ export default {
   HOTPROJECTLIST_QUERY,
   SEARCHPROJECTLIST_QUERY,
   SEARCHUSERLIST_QUERY,
+  USERINFO_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
   FOLLOW_MUTATION,
