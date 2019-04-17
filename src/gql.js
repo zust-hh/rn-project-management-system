@@ -45,6 +45,43 @@ const HOTPROJECTLIST_QUERY = gql`
 }
 `
 
+const SEARCHPROJECTLIST_QUERY = gql`
+  query SearchProjectListQuery($searchText: String!) {
+    projectList(filter: $searchText) {
+      projects {
+        id
+        name
+        type
+        description
+        addBy {
+          name
+        }
+        tutor {
+          name
+        }
+      }
+      myFavoriteProjects {
+        id
+      }
+    }
+}
+`
+
+const SEARCHUSERLIST_QUERY = gql`
+  query SearchUserListQuery($searchText: String!) {
+    userList(filter: $searchText) {
+      users {
+        id
+        name
+        class
+      }
+      myFollowUsers {
+        id
+      }
+    }
+}
+`
+
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($idNumber: String!, $password: String!) {
     login(idNumber: $idNumber, password: $password) {
@@ -59,6 +96,14 @@ const LOGIN_MUTATION = gql`
 const FAVORITE_MUTATION = gql`
   mutation FavoriteMutation($projectId: String!) {
     collectionProject(projectId: $projectId) {
+      id
+    }
+  }
+`
+
+const FOLLOW_MUTATION = gql`
+  mutation FollowMutation($followUserId: String!) {
+    followUser(followUserId: $followUserId) {
       id
     }
   }
@@ -81,10 +126,24 @@ const UPDATE_PROJECTS_SUBSCRIPTION = gql`
   }
 `
 
+const UPDATE_USERS_SUBSCRIPTION = gql`
+  subscription {
+    updateUser {
+      id
+      name
+      class
+    }
+  }
+`
+
 export default {
   PROJECTLIST_QUERY,
   HOTPROJECTLIST_QUERY,
+  SEARCHPROJECTLIST_QUERY,
+  SEARCHUSERLIST_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
+  FOLLOW_MUTATION,
   UPDATE_PROJECTS_SUBSCRIPTION,
+  UPDATE_USERS_SUBSCRIPTION
 }

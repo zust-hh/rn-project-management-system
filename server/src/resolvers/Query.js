@@ -52,10 +52,71 @@ projectList = async (root, args, context, info) => {
         myFavoriteProjects: [],
         count
     }
-
-
 }
 
+userList = async (root, args, context, info) => {
+    const userId = getUserId(context);
+    let where = args.filter ? {
+        OR: [
+            { name_contains: args.filter },
+            { idNumber_contains: args.filter },
+            { addByProjects_some: {
+                OR: [
+                    { description_contains: args.filter },
+                    { name_contains: args.filter },
+                ],
+            } }
+        ],
+    } : {};
+    let users = await context.prisma.users({
+        where,
+        skip: args.skip,
+        first: args.first,
+        orderBy: args.orderBy,
+    })
+
+    // 用于记录自己可能在的情况
+    let myIndex = -1;
+
+    const count = await context.prisma
+        .usersConnection({
+            where,
+        })
+        .aggregate()
+        .count()
+
+    if (userId) {
+        for(let i = 0; i < users.length; i++) {
+            if (users[i].id == userId) {
+                myIndex = i;
+            }
+        }
+        const myFollowUsers = await context.prisma.user({
+            id: userId
+        }).follow();
+
+        if (myIndex !== -1) {
+            users.splice(myIndex, 1);
+        }
+
+        return {
+            users,
+            myFollowUsers,
+            count
+        }
+    }
+
+    if (myIndex !== -1) {
+        users.splice(myIndex, 1);
+    }
+
+    return {
+        users,
+        myFollowUsers: [],
+        count
+    }
+}
 module.exports = {
     projectList,
+    userList
 }

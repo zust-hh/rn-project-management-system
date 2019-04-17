@@ -63,8 +63,23 @@ collectionProject = (root, args, context, info) => {
     })
 }
 
+followUser = (root, args, context, info) => {
+    const userId = getUserId(context)
+    const { followUserId } = args
+
+    return context.prisma.updateUser({
+        where: { id: userId },
+        data: { follow: {
+            connect: {
+                id: followUserId
+            }
+        } }
+    })
+}
+
 module.exports = {
     signup,
     login,
     collectionProject,
+    followUser
 }

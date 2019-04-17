@@ -2,6 +2,8 @@ import React from "react";
 import { Text } from "react-native";
 import { NavigationBar, Title, DropDownMenu, ListView, ImageBackground, Tile, Subtitle, Divider, Screen, View, Button } from '@shoutem/ui';
 import { Query, Mutation } from 'react-apollo';
+import ProjectCard from '../components/ProjectCard';
+import { findInArray, _subscribeToUpdateProjects } from './utils'
 
 import gql from '../gql';
 export default class ProjectList extends React.Component {
@@ -17,59 +19,7 @@ export default class ProjectList extends React.Component {
         { name: '我的', value: '我的' },
       ],
       attribution: 0,
-      loginIn: false
     }
-  }
-
-  findInArray = (x, arr) => {
-    let find = false
-    if (arr.length > 0) {
-      arr.map((item) => {
-        if (x.id == item.id) find = true
-      })
-    }
-    return find
-  }
-
-  // 收藏之后的更新
-  _updateCacheAfterCollection = (store, projectId) => {
-    const { attribution } = this.state;
-    const data = store.readQuery({
-      query: gql.PROJECTLIST_QUERY,
-      variables: { attribution },
-    })
-
-    const favoritedProject = data.projectList.projects.find(project => project.id === projectId)
-    data.projectList.myFavoriteProjects = [...data.projectList.myFavoriteProjects, {
-      id: projectId,
-      __typename: "Project"
-    }]
-    favoritedProject.showFavorite = false
-    store.writeQuery({ query: gql.PROJECTLIST_QUERY, data })
-  }
-
-  _subscribeToUpdateProjects = subscribeToMore => {
-    subscribeToMore({
-      document: gql.UPDATE_PROJECTS_SUBSCRIPTION,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev
-        const UpdateProject = subscriptionData.data.updateProject
-        prev.projectList.projects.map((project) => {
-          if (project.id === UpdateProject.id) {
-            project.showFavorite = false
-          }
-        })
-        const updatedProjectList = Object.assign({}, prev, {
-          projectList: {
-            projects: [...prev.projectList.projects],
-            count: prev.projectList.projects.length,
-            myFavoriteProjects: [...prev.projectList.myFavoriteProjects, { id: UpdateProject.id, __typename: "Project" }],
-            __typename: prev.projectList.__typename
-          }
-        })
-        return updatedProjectList
-      }
-    })
   }
 
   renderRow = (data) => {
@@ -155,11 +105,11 @@ export default class ProjectList extends React.Component {
           variables={{ attribution }}
         >
           {({ loading, error, data, subscribeToMore }) => {
-            this._subscribeToUpdateProjects(subscribeToMore)
+            _subscribeToUpdateProjects(subscribeToMore)
             if (data && data.projectList && data.projectList.projects.length > 0) {
               const { projects, myFavoriteProjects } = data.projectList;
               projects.map((project) => {
-                project.showFavorite = !this.findInArray(project, myFavoriteProjects);
+                project.showFavorite = !findInArray(project, myFavoriteProjects);
               })
             } else {
               data.projectList = {}
@@ -170,7 +120,7 @@ export default class ProjectList extends React.Component {
               <ListView
                 loading={loading}
                 data={loading ? [] : data.projectList.projects}
-                renderRow={this.renderRow}
+                renderRow={ProjectCard}
               />
             )
           }}

@@ -67,6 +67,7 @@ enum ProjectOrderByInput {
 
 type UserList {
   users: [User!]!
+  myFollowUsers: [User!]!
   count: Int!
 }
 
@@ -97,7 +98,7 @@ type AuthPayload {
 type Query {
   projectList(filter: String, attribution: Int, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
   # project(id: String): Project!
-  # userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
+  userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
   # userHome(id: String): UserHome!
   # messageList(filter: String, skip: Int, first: Int, orderBy: MessageOrderByInput): MessageList!
 }
@@ -106,6 +107,7 @@ type Mutation {
   signup(idNumber: String!, password: String!, name: String!): AuthPayload
   login(idNumber: String!, password: String!): AuthPayload
   collectionProject(projectId: String!): Project
+  followUser(followUserId: String!): User
   # changeProject(project: Project!): Project!
   # changeFollow(userId: String!, followUserId: String!): Boolean
   # readMessage(userId: String!, messageId: String!): Boolean
@@ -115,4 +117,5 @@ type Mutation {
 type Subscription {
   updateProject: Project
   newProject: Project
+  updateUser: User
 }

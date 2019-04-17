@@ -19,13 +19,9 @@ _updateCacheAfterCollection = (store, projectId) => {
   store.writeQuery({ query: gql.PROJECTLIST_QUERY, data })
 }
 
-const ProjectCard = (data) => {
+const UserCard = (data) => {
   return (
     <View>
-      <ImageBackground
-        styleName="large-banner"
-        source={{ uri: "https://shoutem.github.io/static/getting-started/restaurant-6.jpg" }}
-      >
         {
           data.length !== 0 ? <View styleName="space-between vertical fill-parent" style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: 24 }}>
             <View styleName="horizontal space-between">
@@ -62,7 +58,6 @@ const ProjectCard = (data) => {
             </View>
           </View> : null
         }
-      </ImageBackground>
       <Divider styleName="line" />
     </View>
   );
