@@ -5,6 +5,8 @@ import UserHome from '../screens/UserHome';
 import Login from '../screens/Login';
 import Search from '../screens/Search';
 import SearchList from '../screens/SearchList';
+import MyFavorite from '../screens/MyFavorite';
+import MyFollow from '../screens/MyFollow';
 
 import { Icon, TabBar } from '../components';
 
@@ -47,6 +49,12 @@ export const AppRouter = createStackNavigator(
     },
     SearchList: {
       screen: SearchList
+    },
+    MyFavorite: {
+      screen: MyFavorite
+    },
+    MyFollow: {
+      screen: MyFollow
     }
   },
   {

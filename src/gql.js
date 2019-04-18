@@ -87,17 +87,51 @@ const USERINFO_QUERY = gql`
     getUserInfo(userId: $userId) {
       id
       name
-      addByProjects {
+      memberProjects {
         id
         name
         steps {
-          name
+          id
           state
         }
+        state
       }
       type
       unreadMessage {
         id
+      }
+    }
+}
+`
+
+const USERFAVORITE_QUERY = gql`
+  query UserFavoriteQuery($userId: String) {
+    getUserInfo(userId: $userId) {
+      id
+      favorite {
+        id
+        name
+        type
+        description
+        addBy {
+          name
+        }
+        tutor {
+          name
+        }
+      }
+    }
+}
+`
+
+const USERFOLLOW_QUERY = gql`
+  query UserFollowQuery($userId: String) {
+    getUserInfo(userId: $userId) {
+      id
+      follow {
+        id
+        name
+        class
       }
     }
 }
@@ -163,6 +197,8 @@ export default {
   SEARCHPROJECTLIST_QUERY,
   SEARCHUSERLIST_QUERY,
   USERINFO_QUERY,
+  USERFAVORITE_QUERY,
+  USERFOLLOW_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
   FOLLOW_MUTATION,

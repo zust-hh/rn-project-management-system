@@ -5342,6 +5342,11 @@ react-native-navigation-experimental-compat@shoutem/react-native-navigation-expe
   dependencies:
     fbjs "~0.8.9"
 
+react-native-page-scrollview@^1.0.2:
+  version "1.0.2"
+  resolved "http://registry.npm.taobao.org/react-native-page-scrollview/download/react-native-page-scrollview-1.0.2.tgz#90e6f88d08f149b9190b9591c390fb81fe85e216"
+  integrity sha1-kOb4jQjxSbkZC5WRw5D7gf6F4hY=
+
 react-native-photo-view@shoutem/react-native-photo-view#2f650beba07a263876c54f81a34b5ac2f9b805ce:
   version "1.5.2"
   resolved "https://codeload.github.com/shoutem/react-native-photo-view/tar.gz/2f650beba07a263876c54f81a34b5ac2f9b805ce"
