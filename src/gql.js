@@ -90,6 +90,14 @@ const USERINFO_QUERY = gql`
       memberProjects {
         id
         name
+        type
+        description
+        addBy {
+          name
+        }
+        tutor {
+          name
+        }
         steps {
           id
           state
@@ -137,6 +145,38 @@ const USERFOLLOW_QUERY = gql`
 }
 `
 
+const USERMESSAGE_QUERY = gql`
+  query UserMessageQuery($userId: String) {
+    getUserInfo(userId: $userId) {
+      id
+      message {
+        id
+        addBy {
+          name
+        }
+        createdAt
+        article
+      }
+      unreadMessage {
+        id
+        addBy {
+          name
+        }
+        createdAt
+        article
+      }
+      readMessage {
+        id
+        addBy {
+          name
+        }
+        createdAt
+        article
+      }
+    }
+}
+`
+
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($idNumber: String!, $password: String!) {
     login(idNumber: $idNumber, password: $password) {
@@ -160,6 +200,25 @@ const FOLLOW_MUTATION = gql`
   mutation FollowMutation($followUserId: String!) {
     followUser(followUserId: $followUserId) {
       id
+    }
+  }
+`
+
+const SENDMESSAGE_MUTATION = gql`
+  mutation SendMessageMutation($article: String!, $userIdArr: [String!]!) {
+    sendMessage(article: $article, userIdArr: $userIdArr) {
+      id
+      addBy {
+        name
+      }
+      createdAt
+      article
+      unread {
+        name
+      }
+      read {
+        name
+      }
     }
   }
 `
@@ -199,9 +258,11 @@ export default {
   USERINFO_QUERY,
   USERFAVORITE_QUERY,
   USERFOLLOW_QUERY,
+  USERMESSAGE_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
   FOLLOW_MUTATION,
+  SENDMESSAGE_MUTATION,
   UPDATE_PROJECTS_SUBSCRIPTION,
   UPDATE_USERS_SUBSCRIPTION
 }

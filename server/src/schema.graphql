@@ -109,6 +109,7 @@ type Mutation {
   login(idNumber: String!, password: String!): AuthPayload
   collectionProject(projectId: String!): Project
   followUser(followUserId: String!): User
+  sendMessage(article: String!, userIdArr: [String!]!): Message
   # changeProject(project: Project!): Project!
   # changeFollow(userId: String!, followUserId: String!): Boolean
   # readMessage(userId: String!, messageId: String!): Boolean

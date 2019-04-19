@@ -55,11 +55,13 @@ collectionProject = (root, args, context, info) => {
 
     return context.prisma.updateProject({
         where: { id: projectId },
-        data: { favoriteUser: {
-            connect: {
-                id: userId
+        data: {
+            favoriteUser: {
+                connect: {
+                    id: userId
+                }
             }
-        } }
+        }
     })
 }
 
@@ -69,11 +71,40 @@ followUser = (root, args, context, info) => {
 
     return context.prisma.updateUser({
         where: { id: userId },
-        data: { follow: {
-            connect: {
-                id: followUserId
+        data: {
+            follow: {
+                connect: {
+                    id: followUserId
+                }
             }
-        } }
+        }
+    })
+}
+
+sendMessage = (root, args, context, info) => {
+    console.log(args)
+    const userId = getUserId(context)
+    const { userIdArr, article } = args
+
+    console.log(userIdArr, article)
+
+    let unreadIdArr = []
+    userIdArr.map((id) => {
+        unreadIdArr.push({
+            id
+        })
+    })
+
+    return context.prisma.createMessage({
+        article,
+        addBy: {
+            connect: {
+                id: userId
+            }
+        },
+        unread: {
+            connect: unreadIdArr
+        }
     })
 }
 
@@ -81,5 +112,6 @@ module.exports = {
     signup,
     login,
     collectionProject,
-    followUser
+    followUser,
+    sendMessage
 }

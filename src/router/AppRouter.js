@@ -7,6 +7,9 @@ import Search from '../screens/Search';
 import SearchList from '../screens/SearchList';
 import MyFavorite from '../screens/MyFavorite';
 import MyFollow from '../screens/MyFollow';
+import MyMessage from '../screens/MyMessage';
+import NewMessage from '../screens/NewMessage';
+import UserProjectList from '../screens/UserProjectList';
 
 import { Icon, TabBar } from '../components';
 
@@ -55,6 +58,15 @@ export const AppRouter = createStackNavigator(
     },
     MyFollow: {
       screen: MyFollow
+    },
+    MyMessage: {
+      screen: MyMessage
+    },
+    NewMessage: {
+      screen: NewMessage
+    },
+    UserProjectList: {
+      screen: UserProjectList
     }
   },
   {

@@ -52,9 +52,9 @@ export default class UserHome extends React.Component {
     renderUserHome = (data) => {
         const { navigate } = this.props.navigation;
         const { type, name, memberProjects } = data
-        let doingProjectNum = 0;
+        let doingProject = [];
         memberProjects.map((project) => {
-            if (project.state === 1) doingProjectNum++
+            if (project.state === 1) doingProject.push(project)
         })
         switch (type) {
             case 0: return <ImageBackground
@@ -88,14 +88,26 @@ export default class UserHome extends React.Component {
                     </View>
                 </ImageBackground>
                 <View styleName="horizontal h-center" style={{ width: windowWidth - 48, height: 140, position: 'absolute', top: 42, left: 24 }}>
-                    <View style={{ width: (windowWidth - 48) / 2, height: 140 }}>
-                        <Text>{doingProjectNum}</Text>
+                    <Button
+                        style={{ width: (windowWidth - 48) / 2, height: 140 }}
+                        onPress={() => navigate('UserProjectList', {
+                            page: 'UserHomeScreen',
+                            projectList: doingProject
+                        })}
+                    >
+                        <Text>{doingProject.length}</Text>
                         <Text>进行中</Text>
-                    </View>
-                    <View style={{ width: (windowWidth - 48) / 2, height: 140 }}>
+                    </Button>
+                    <Button
+                        style={{ width: (windowWidth - 48) / 2, height: 140 }}
+                        onPress={() => navigate('UserProjectList', {
+                            page: 'UserHomeScreen',
+                            projectList: memberProjects
+                        })}
+                    >
                         <Text>{memberProjects.length}</Text>
                         <Text>全部</Text>
-                    </View>
+                    </Button>
                 </View>
                 <View style={{ marginTop: 60 }}>
                     <View><Text>最近项目</Text></View>
@@ -118,7 +130,15 @@ export default class UserHome extends React.Component {
                         >
                             <Text>我的收藏</Text>
                         </Button>
-                        <View style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}><Text>我的信息</Text></View>
+                        <Button
+                            style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}
+                            onPress={() => navigate('MyMessage', {
+                                page: 'UserHomeScreen',
+                                userType: type
+                            })}
+                        >
+                            <Text>我的消息</Text>
+                        </Button>
                         <Button
                             style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}
                             onPress={() => navigate('MyFollow', {
