@@ -25,7 +25,8 @@ export default class UserHome extends React.Component {
     }
 
     renderGridProjectCard = (data, index) => {
-        const { name, steps } = data;
+        const { navigate } = this.props.navigation;
+        const { name, steps, id } = data;
         const stepsLength = steps.length
         let completNum = 0;
         steps.map((step) => {
@@ -35,7 +36,14 @@ export default class UserHome extends React.Component {
         })
 
         return (
-            <View style={{ width: 140, height: 140 }} key={index}>
+            <Button
+                style={{ width: 140, height: 140 }}
+                key={index}
+                onPress={() => navigate('ProjectDetail', {
+                    page: 'UserHomeScreen',
+                    id
+                })}
+            >
                 <ImageBackground
                     style={{ width: 140, height: 80 }}
                     source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
@@ -45,7 +53,7 @@ export default class UserHome extends React.Component {
                     </View>
                 </ImageBackground>
                 <Text style={{ width: 130 }} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-            </View>
+            </Button>
         )
     }
 

@@ -130,8 +130,17 @@ getUserInfo = async (root, args, context, info) => {
     return user
 }
 
+project = async (root, args, context, info) => {
+    let project = await context.prisma.project({
+        id: args.id
+    })
+
+    return project
+}
+
 module.exports = {
     projectList,
     userList,
-    getUserInfo
+    getUserInfo,
+    project
 }

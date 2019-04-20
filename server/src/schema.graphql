@@ -97,7 +97,7 @@ type AuthPayload {
 
 type Query {
   projectList(filter: String, attribution: Int, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
-  # project(id: String): Project!
+  project(id: String): Project!
   userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
   getUserInfo(userId: String): User!
   # userHome(id: String): UserHome!

@@ -177,6 +177,38 @@ const USERMESSAGE_QUERY = gql`
 }
 `
 
+const PROJECTDETAIL_QUERY = gql`
+  query ProjectDetailQuery($id: String) {
+    project(id: $id) {
+      id
+      name
+      description
+      addBy {
+        name
+      }
+      tutor {
+        name
+      }
+      type
+      steps {
+        id
+        name
+        finishTime
+        updateAt
+        charge {
+          name
+        }
+        state
+      }
+      state
+      member {
+        name
+      }
+      college
+      }
+  }
+`
+
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($idNumber: String!, $password: String!) {
     login(idNumber: $idNumber, password: $password) {
@@ -259,6 +291,7 @@ export default {
   USERFAVORITE_QUERY,
   USERFOLLOW_QUERY,
   USERMESSAGE_QUERY,
+  PROJECTDETAIL_QUERY,
   LOGIN_MUTATION,
   FAVORITE_MUTATION,
   FOLLOW_MUTATION,

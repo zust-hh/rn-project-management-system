@@ -10,6 +10,7 @@ import MyFollow from '../screens/MyFollow';
 import MyMessage from '../screens/MyMessage';
 import NewMessage from '../screens/NewMessage';
 import UserProjectList from '../screens/UserProjectList';
+import ProjectDetail from '../screens/ProjectDetail';
 
 import { Icon, TabBar } from '../components';
 
@@ -67,6 +68,9 @@ export const AppRouter = createStackNavigator(
     },
     UserProjectList: {
       screen: UserProjectList
+    },
+    ProjectDetail: {
+      screen: ProjectDetail
     }
   },
   {
