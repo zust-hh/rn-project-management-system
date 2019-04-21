@@ -11,8 +11,10 @@ import { setContext } from 'apollo-link-context'
 
 import { AuthLoadingRouter } from './router/AuthLoading';
 
+const ip = '192.168.1.104'
+
 const httpLink = createHttpLink({
-  uri: 'http://192.168.1.110:4000'
+  uri: `http://${ip}:4000`
 })
 
 const authLink = setContext(async (_, { headers }) => {
@@ -26,7 +28,7 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://192.168.1.110:4000`,
+  uri: `ws://${ip}:4000`,
   options: {
     reconnect: true,
     connectionParams: {

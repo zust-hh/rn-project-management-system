@@ -49,7 +49,7 @@ login = async (parent, args, context, info) => {
     }
 }
 
-collectionProject = (root, args, context, info) => {
+collectionProject = async (root, args, context, info) => {
     const userId = getUserId(context)
     const { projectId } = args
 
@@ -65,7 +65,7 @@ collectionProject = (root, args, context, info) => {
     })
 }
 
-followUser = (root, args, context, info) => {
+followUser = async (root, args, context, info) => {
     const userId = getUserId(context)
     const { followUserId } = args
 
@@ -81,12 +81,9 @@ followUser = (root, args, context, info) => {
     })
 }
 
-sendMessage = (root, args, context, info) => {
-    console.log(args)
+sendMessage = async (root, args, context, info) => {
     const userId = getUserId(context)
     const { userIdArr, article } = args
-
-    console.log(userIdArr, article)
 
     let unreadIdArr = []
     userIdArr.map((id) => {
@@ -108,10 +105,41 @@ sendMessage = (root, args, context, info) => {
     })
 }
 
+changeSteps = async (root, args, context, info) => {
+    const { steps } = args
+    console.log(steps)
+
+    Object.keys(steps).forEach(async (key) => {
+        let data = {}
+        if (steps[key].name) {
+            data.name = steps[key].name
+        }
+        if (steps[key].chargeId) {
+            data.charge = {
+                connect: {
+                    id: steps[key].chargeId
+                }
+            }
+        }
+        if (steps[key].state) {
+            data.state = steps[key].state
+        }
+        console.log(data);
+        const updatedStep = await context.prisma.updateStep({
+            where: { id: steps[key].id },
+            data
+        })
+        console.log(updatedStep)
+    });
+
+    return true;
+}
+
 module.exports = {
     signup,
     login,
     collectionProject,
     followUser,
-    sendMessage
+    sendMessage,
+    changeSteps
 }

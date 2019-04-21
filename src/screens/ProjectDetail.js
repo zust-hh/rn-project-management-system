@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { Screen, View, TextInput, Button, ListView, Text, ImageBackground } from "@shoutem/ui";
 import AsyncStorage from '@react-native-community/async-storage';
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 
 import gql from "../gql";
 import { _subscribeToUpdateProjects } from './utils'
@@ -17,11 +17,12 @@ export default class ProjectDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editState: 0
+            editState: false,
+            stepsArr: {},
         }
     }
 
-    renderStepContent = (step) => {
+    renderStepContent = (step, editState) => {
         const stateColor = ['blue', 'yellow', 'green'];
         const stateText = ['未完成', '待审核', '已完成'];
         return (
@@ -35,13 +36,13 @@ export default class ProjectDetail extends React.Component {
                 </View>
                 <View style={{ marginLeft: 10 }}>
                     {
-                        this.state.editState ? <TextInput
+                        editState ? <TextInput
                             defaultValue={step.name}
                         /> : <Text>{step.name}</Text>
                     }
                     <View styleName="horizontal space-between">
                         {
-                            this.state.editState ? <View>
+                            editState ? <View>
                                 <Text>负责人：</Text>
                                 <TextInput
                                     defaultValue={step.charge.name}
@@ -49,14 +50,14 @@ export default class ProjectDetail extends React.Component {
                             </View> : <Text>负责人：{step.charge.name}</Text>
                         }
                         {
-                            this.state.editState ? <Picker
+                            editState ? <Picker
                                 selectedValue={step.state}
                             // onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}\
                             >
                                 <Picker.Item label="未完成" value="1" />
                                 <Picker.Item label="待审核" value="2" />
                                 <Picker.Item label="已完成" value="3" />
-                            </Picker> <Text>{stateText[step.state - 1]}</Text>
+                            </Picker> : <Text>{stateText[step.state - 1]}</Text>
                         }
                     </View>
                 </View>
@@ -67,6 +68,9 @@ export default class ProjectDetail extends React.Component {
     render() {
         const { state } = this.props.navigation;
         const { id } = state.params;
+        const { editState } = this.state;
+        const stateColor = ['blue', 'yellow', 'green'];
+        const stateText = ['未完成', '待审核', '已完成'];
         return (
             <Screen style={{ marginTop: 32 }}>
                 <View>
@@ -76,7 +80,6 @@ export default class ProjectDetail extends React.Component {
                     >
                         {({ loading, error, data, subscribeToMore }) => {
                             // _subscribeToUpdateProjects(subscribeToMore)
-                            console.log(data);
                             if (loading) {
                                 return (
                                     <Text>123</Text>
@@ -85,6 +88,23 @@ export default class ProjectDetail extends React.Component {
                                 const { project } = data;
                                 const { steps } = project;
                                 steps[steps.length - 1].endStep = true;
+                                const formatStepsArr = [];
+                                const { stepsArr } = this.state;
+                                Object.keys(stepsArr).forEach(async (key) => {
+                                    let stepDate = {
+                                        id: key
+                                    };
+                                    if (stepsArr[key].name) {
+                                        stepDate.name = stepsArr[key].name
+                                    }
+                                    if (stepsArr[key].chargeId) {
+                                        stepDate.chargeId = stepsArr[key].chargeId
+                                    }
+                                    if (stepsArr[key].state) {
+                                        stepDate.state = stepsArr[key].state
+                                    }
+                                    formatStepsArr.push(stepDate)
+                                });
                                 return (
                                     <View>
                                         <ImageBackground
@@ -93,19 +113,106 @@ export default class ProjectDetail extends React.Component {
                                         >
                                             <Text>{project.name}</Text>
                                         </ImageBackground>
-                                        <ListView
-                                            data={project.steps}
-                                            renderRow={this.renderStepContent}
-                                        />
+                                        {
+                                            steps.map((step, index) => {
+                                                const stepState = stateText[step.state - 1]
+                                                return (
+                                                    <View styleName="horizontal v-start" key={index}>
+                                                        <Text>{step.finishTime.substr(0, 10)}</Text>
+                                                        <View style={{ width: 24, alignItems: 'center', marginLeft: 10 }}>
+                                                            <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: stateColor[step.state - 1] }} />
+                                                            {
+                                                                step.endStep ? null : <View style={{ width: 1, height: 60, backgroundColor: 'blue' }} />
+                                                            }
+                                                        </View>
+                                                        <View style={{ marginLeft: 10 }}>
+                                                            {
+                                                                editState ? <TextInput
+                                                                    defaultValue={step.name}
+                                                                    onChangeText={value => {
+                                                                        const stepsArr = this.state.stepsArr;
+                                                                        if (!stepsArr[step.id]) {
+                                                                            stepsArr[step.id] = {}
+                                                                        }
+                                                                        stepsArr[step.id].name = value;
+                                                                        this.setState({ stepsArr })
+                                                                    }}
+                                                                /> : <Text>{step.name}</Text>
+                                                            }
+                                                            <View styleName="horizontal space-between">
+                                                                {
+                                                                    editState ? <View styleName="horizontal">
+                                                                        <Text>负责人：</Text>
+                                                                        <TextInput
+                                                                            defaultValue={step.charge.name}
+                                                                            onChangeText={value => {
+                                                                                const stepsArr = this.state.stepsArr;
+                                                                                if (!stepsArr[step.id]) {
+                                                                                    stepsArr[step.id] = {}
+                                                                                }
+                                                                                stepsArr[step.id].chargeId = value;
+                                                                                this.setState({ stepsArr })
+                                                                            }}
+                                                                        />
+                                                                    </View> : <Text>负责人：{step.charge.name}</Text>
+                                                                }
+                                                                {
+                                                                    editState ? <Picker
+                                                                        style={{ height: 50, width: 150 }}
+                                                                        selectedValue={stepsArr[step.id] && stepsArr[step.id].state ? stepsArr[step.id].state : stepState}
+                                                                        onValueChange={(itemValue, itemIndex) => {
+                                                                            const stepsArr = this.state.stepsArr;
+                                                                            if (!stepsArr[step.id]) {
+                                                                                stepsArr[step.id] = {}
+                                                                            }
+                                                                            stepsArr[step.id].state = itemValue;
+                                                                            this.setState({ stepsArr })
+                                                                        }}
+                                                                    >
+                                                                        <Picker.Item label="未完成" value="未完成" />
+                                                                        <Picker.Item label="待审核" value="待审核" />
+                                                                        <Picker.Item label="已完成" value="已完成" />
+                                                                    </Picker> : <Text>{stepState}</Text>
+                                                                }
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                        {
+                                            this.state.editState ? <Mutation
+                                                mutation={gql.UPDATESTEPS_MUTATION}
+                                                variables={{ steps: formatStepsArr }}
+                                                // update={(store) =>
+                                                //     _updateCacheAfterCollection(store, data.id)
+                                                // }
+                                            >
+                                                {mutation => (
+                                                    <Button
+                                                        style={{ height: 48, width: 48, borderRadius: 24, position: 'absolute', right: 48, bottom: 48 }}
+                                                        onPress={mutation}
+                                                    >
+                                                        <Text>完成</Text>
+                                                    </Button>
+                                                )}
+                                            </Mutation> : <Button
+                                                style={{ height: 48, width: 48, borderRadius: 24, position: 'absolute', right: 48, bottom: 48 }}
+                                                onPress={() => {
+                                                    this.setState({
+                                                        editState: !this.state.editState
+                                                    })
+                                                }}
+                                            >
+                                                    <Text>管理</Text>
+                                                </Button>
+                                        }
                                     </View>
                                 )
                             }
                         }}
                     </Query>
                 </View>
-                <Button style={{ height: 48, width: 48, borderRadius: 24, position: 'absolute', right: 48, bottom: 48 }}>
-                    <Text>管理</Text>
-                </Button>
             </Screen>
         );
     }

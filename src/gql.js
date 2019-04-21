@@ -255,6 +255,12 @@ const SENDMESSAGE_MUTATION = gql`
   }
 `
 
+const UPDATESTEPS_MUTATION = gql`
+  mutation UpdateStepsMutation($steps: [Object]) {
+    changeSteps(steps: $steps)
+  }
+`
+
 const UPDATE_PROJECTS_SUBSCRIPTION = gql`
   subscription {
     updateProject {
@@ -296,6 +302,7 @@ export default {
   FAVORITE_MUTATION,
   FOLLOW_MUTATION,
   SENDMESSAGE_MUTATION,
+  UPDATESTEPS_MUTATION,
   UPDATE_PROJECTS_SUBSCRIPTION,
   UPDATE_USERS_SUBSCRIPTION
 }
