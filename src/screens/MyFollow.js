@@ -1,6 +1,5 @@
 import React from "react";
-import { Screen, View, TextInput, Button, ListView, Text } from "@shoutem/ui";
-import AsyncStorage from '@react-native-community/async-storage';
+import { Screen, View, ListView } from "@shoutem/ui";
 import { Query } from "react-apollo";
 import UserCard from '../components/UserCard';
 

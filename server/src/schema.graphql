@@ -95,13 +95,6 @@ type AuthPayload {
   user: User
 }
 
-input StepsChangeDetail {
-  id: String!
-  name: String
-  chargeId: String
-  state: Int
-}
-
 type Query {
   projectList(filter: String, attribution: Int, skip: Int, first: Int, orderBy: ProjectOrderByInput): ProjectList!
   project(id: String): Project!
@@ -115,7 +108,7 @@ type Mutation {
   collectionProject(projectId: String!): Project
   followUser(followUserId: String!): User
   sendMessage(article: String!, userIdArr: [String!]!): Message
-  changeSteps(steps: [StepsChangeDetail]): Boolean
+  changeSteps(steps: [String]): Boolean
 }
 
 type Subscription {

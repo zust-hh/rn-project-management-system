@@ -1,13 +1,11 @@
 import React from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Dimensions
 } from "react-native";
 import posed from "react-native-pose";
-import { EventEmitter } from "events";
 
 const windowWidth = Dimensions.get("window").width;
 const tabWidth = windowWidth / 3;

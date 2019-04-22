@@ -1,14 +1,9 @@
 import React from "react";
-import {
-    Dimensions
-} from 'react-native'
-import { Screen, View, TextInput, Button, ListView, Text, NavigationBar, Title } from "@shoutem/ui";
-import AsyncStorage from '@react-native-community/async-storage';
+import { Screen, View, Button, ListView, Text, NavigationBar, Title } from "@shoutem/ui";
 import { Query } from "react-apollo";
 
 import gql from "../gql";
-const windowWidth = Dimensions.get("window").width;
-// import { _subscribeToUpdateUsers } from './utils'
+
 export default class MyMessage extends React.Component {
     static navigationOptions = {
         header: null
@@ -74,7 +69,6 @@ export default class MyMessage extends React.Component {
                     query={gql.USERMESSAGE_QUERY}
                 >
                     {({ loading, error, data }) => {
-                        // _subscribeToUpdateUsers(subscribeToMore)
                         if (data && data.getUserInfo) {
                             const { unreadMessage } = data.getUserInfo;
                             unreadMessage.map((message) => {

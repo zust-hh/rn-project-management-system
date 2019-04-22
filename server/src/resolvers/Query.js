@@ -1,4 +1,4 @@
-const { APP_SECRET, getUserId } = require('../utils')
+const { getUserId } = require('../utils')
 
 projectList = async (root, args, context, info) => {
     const userId = getUserId(context);

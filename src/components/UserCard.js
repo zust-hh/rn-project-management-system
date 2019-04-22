@@ -1,6 +1,6 @@
 import React from "react";
-import { NavigationBar, Title, ImageBackground, Row, Icon, ListView, Tile, Subtitle, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
-import { Query, Mutation } from 'react-apollo';
+import { Row, Icon, Divider, View, Text } from '@shoutem/ui';
+import { Mutation } from 'react-apollo';
 import gql from '../gql';
 
 // 关注之后的更新

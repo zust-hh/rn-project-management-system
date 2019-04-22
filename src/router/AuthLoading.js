@@ -7,17 +7,11 @@ import { AppRouter } from './AppRouter';
 class AuthLoadingScreen  extends React.Component {
   constructor(props) {
     super(props);
-    // this.authAsync();
   }
 
   componentDidMount() {
     this.props.navigation.navigate('AppRouter');
   }
-
-  authAsync = async () => {
-    // const userToken = await AsyncStorage.getItem('userToken');
-    // this.props.navigation.navigate(userToken ? 'AppRouter' : 'AuthRouter');
-  };
 
   render() {
     return (

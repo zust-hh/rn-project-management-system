@@ -256,7 +256,7 @@ const SENDMESSAGE_MUTATION = gql`
 `
 
 const UPDATESTEPS_MUTATION = gql`
-  mutation UpdateStepsMutation($steps: [Object]) {
+  mutation UpdateStepsMutation($steps: [String]) {
     changeSteps(steps: $steps)
   }
 `

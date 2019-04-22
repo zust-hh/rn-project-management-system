@@ -103,7 +103,7 @@ export default class ProjectDetail extends React.Component {
                                     if (stepsArr[key].state) {
                                         stepDate.state = stepsArr[key].state
                                     }
-                                    formatStepsArr.push(stepDate)
+                                    formatStepsArr.push(JSON.stringify(stepDate))
                                 });
                                 return (
                                     <View>
@@ -159,20 +159,20 @@ export default class ProjectDetail extends React.Component {
                                                                 {
                                                                     editState ? <Picker
                                                                         style={{ height: 50, width: 150 }}
-                                                                        selectedValue={stepsArr[step.id] && stepsArr[step.id].state ? stepsArr[step.id].state : stepState}
+                                                                        selectedValue={stepsArr[step.id] && stepsArr[step.id].state ? stateText[stepsArr[step.id].state - 1] : stepState}
                                                                         onValueChange={(itemValue, itemIndex) => {
                                                                             const stepsArr = this.state.stepsArr;
                                                                             if (!stepsArr[step.id]) {
                                                                                 stepsArr[step.id] = {}
                                                                             }
-                                                                            stepsArr[step.id].state = itemValue;
+                                                                            stepsArr[step.id].state = itemIndex + 1;
                                                                             this.setState({ stepsArr })
                                                                         }}
                                                                     >
                                                                         <Picker.Item label="未完成" value="未完成" />
                                                                         <Picker.Item label="待审核" value="待审核" />
                                                                         <Picker.Item label="已完成" value="已完成" />
-                                                                    </Picker> : <Text>{stepState}</Text>
+                                                                    </Picker> : <Text>{stepsArr[step.id] && stepsArr[step.id].state ? stateText[stepsArr[step.id].state - 1] : stepState}</Text>
                                                                 }
                                                             </View>
                                                         </View>
@@ -184,9 +184,7 @@ export default class ProjectDetail extends React.Component {
                                             this.state.editState ? <Mutation
                                                 mutation={gql.UPDATESTEPS_MUTATION}
                                                 variables={{ steps: formatStepsArr }}
-                                                // update={(store) =>
-                                                //     _updateCacheAfterCollection(store, data.id)
-                                                // }
+                                                onCompleted={() => this.setState({ editState: false })}
                                             >
                                                 {mutation => (
                                                     <Button

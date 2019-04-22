@@ -2,16 +2,6 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { APP_SECRET, getUserId } = require('../utils')
 
-// newProject = (root, args, context, info) => {
-//     const userId = getUserId(context)
-//     return context.prisma.createProject({
-//         name: args.name,
-//         description: args.description,
-
-//         addBy: { connect: { id: userId } },
-//     })
-// }
-
 signup = async (parent, args, context, info) => {
     const password = await bcrypt.hash(args.password, 10)
     const user = await context.prisma.createUser({ ...args, password })
@@ -107,30 +97,28 @@ sendMessage = async (root, args, context, info) => {
 
 changeSteps = async (root, args, context, info) => {
     const { steps } = args
-    console.log(steps)
 
-    Object.keys(steps).forEach(async (key) => {
+    steps.map(async (step) => {
+        stepObj = JSON.parse(step);
         let data = {}
-        if (steps[key].name) {
-            data.name = steps[key].name
+        if (stepObj.name) {
+            data.name = stepObj.name
         }
-        if (steps[key].chargeId) {
+        if (stepObj.chargeId) {
             data.charge = {
                 connect: {
-                    id: steps[key].chargeId
+                    id: stepObj.chargeId
                 }
             }
         }
-        if (steps[key].state) {
-            data.state = steps[key].state
+        if (stepObj.state) {
+            data.state = stepObj.state
         }
-        console.log(data);
-        const updatedStep = await context.prisma.updateStep({
-            where: { id: steps[key].id },
+        await context.prisma.updateStep({
+            where: { id: stepObj.id },
             data
         })
-        console.log(updatedStep)
-    });
+    })
 
     return true;
 }

@@ -2,10 +2,7 @@ import React from "react";
 import {
     Dimensions
 } from 'react-native';
-import { NavigationBar, Title, ImageBackground, Row, Icon, ListView, Tile, Subtitle, GridRow, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
-import AsyncStorage from '@react-native-community/async-storage';
-import { SwitchNavigator } from 'react-navigation';
-import Login from './Login';
+import { Row, Icon, ListView, Tile, GridRow, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
 import { Query, Mutation } from 'react-apollo';
 import { findInArray, _subscribeToUpdateProjects, _subscribeToUpdateUsers } from './utils'
 
@@ -75,7 +72,7 @@ export default class NewMessage extends React.Component {
     }
 
     render() {
-        const { navigate, goBack, state } = this.props.navigation;
+        const { goBack, state } = this.props.navigation;
         const { searchText, sendUserList, article } = this.state;
         let userIdArr = [];
         if (sendUserList.length > 0) {
