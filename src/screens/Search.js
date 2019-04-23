@@ -1,6 +1,5 @@
 import React from "react";
 import { NavigationBar, Title, ImageBackground, ListView, Tile, Subtitle, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
-import AsyncStorage from '@react-native-community/async-storage';
 import { SwitchNavigator } from 'react-navigation';
 import Login from './Login';
 import { Query } from 'react-apollo';

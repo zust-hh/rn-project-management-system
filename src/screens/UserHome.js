@@ -3,8 +3,7 @@ import {
     Dimensions,
     ScrollView
 } from "react-native";
-import { NavigationBar, Title, ImageBackground, Tile, Subtitle, Divider, Screen, Button, View, Text, Row, TouchableOpacity, GridRow } from '@shoutem/ui';
-import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationBar, Title, ImageBackground, Screen, Button, View, Text, Row, TouchableOpacity, GridRow } from '@shoutem/ui';
 import { SwitchNavigator } from 'react-navigation';
 import Login from './Login';
 import { Query } from 'react-apollo';
@@ -21,6 +20,7 @@ export default class UserHome extends React.Component {
         super(props);
         this.state = {
             userType: 0,
+            userId: null
         }
     }
 
@@ -36,7 +36,7 @@ export default class UserHome extends React.Component {
         })
 
         return (
-            <Button
+            <TouchableOpacity
                 style={{ width: 140, height: 140 }}
                 key={index}
                 onPress={() => navigate('ProjectDetail', {
@@ -53,7 +53,7 @@ export default class UserHome extends React.Component {
                     </View>
                 </ImageBackground>
                 <Text style={{ width: 130 }} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
-            </Button>
+            </TouchableOpacity>
         )
     }
 
@@ -200,10 +200,19 @@ export default class UserHome extends React.Component {
             <Screen style={{ marginTop: 32 }} >
                 <NavigationBar
                     centerComponent={<Title>我的</Title>}
+                    rightComponent={<TouchableOpacity onPress={() => this.props.navigation.navigate('Login', {
+                        callBack: (userType, userId) => {
+                            this.setState({
+                                userType,
+                                userId
+                            });
+                        }
+                    })}><Text>登出</Text></TouchableOpacity>}
                     styleName="inline"
                 />
                 <Query
                     query={gql.USERINFO_QUERY}
+                    variables={{ userId: this.state.userId }}
                 >
                     {({ loading, error, data }) => {
                         if (loading) {

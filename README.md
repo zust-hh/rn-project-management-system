@@ -16,3 +16,6 @@ prisma
 prisma-client-lib
 bcryptjs 密码加密
 jsonwebtoken  生成token
+
+
+docker（prisma本地服务）

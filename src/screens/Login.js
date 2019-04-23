@@ -19,11 +19,15 @@ export default class Login extends React.Component {
   }
 
   _confirm = async data => {
-    const { goBack, state } = this.props.navigation;
+    const { navigate, state, goBack } = this.props.navigation;
     const { token, user } = data.login;
     this._saveUserData(token, user.type);
-    state.params.callBack(user.type);
-    goBack();
+    if (state && state.params && state.params.callBack) {
+      state.params.callBack(user.type, user.id);
+      goBack();
+    } else {
+      navigate('ProjectList');
+    }
   }
 
   _saveUserData = async (token, userType) => {

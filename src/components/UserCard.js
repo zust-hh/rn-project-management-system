@@ -5,10 +5,9 @@ import gql from '../gql';
 
 // 关注之后的更新
 _updateCacheAfterFollow = (store, followUserId) => {
-  const { searchText } = this.state;
   const data = store.readQuery({
     query: gql.SEARCHUSERLIST_QUERY,
-    variables: { searchText },
+    variables: { searchText: '' },
   })
 
   const followUser = data.userList.users.find(user => user.id === followUserId)

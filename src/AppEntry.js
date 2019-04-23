@@ -11,7 +11,7 @@ import { setContext } from 'apollo-link-context'
 
 import { AuthLoadingRouter } from './router/AuthLoading';
 
-const ip = '192.168.1.104'
+const ip = '192.168.1.110'
 
 const httpLink = createHttpLink({
   uri: `http://${ip}:4000`

@@ -214,6 +214,7 @@ const LOGIN_MUTATION = gql`
     login(idNumber: $idNumber, password: $password) {
       token
       user {
+        id
         type
       }
     }
