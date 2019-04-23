@@ -615,10 +615,10 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.3.4":
-  version "7.4.2"
-  resolved "http://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.4.2.tgz#f5ab6897320f16decd855eed70b705908a313fe8"
-  integrity sha1-9atolzIPFt7NhV7tcLcFkIoxP+g=
+"@babel/runtime@^7.4.3":
+  version "7.4.3"
+  resolved "http://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
+  integrity sha1-eYiORSA0IjrZYJGHoK0f4NKtS9w=
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -2197,6 +2197,13 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts@3.2.3:
+  version "3.2.3"
+  resolved "http://registry.npm.taobao.org/echarts/download/echarts-3.2.3.tgz#4f01e15bfda3352fcd8ef9049f13d8448971a258"
+  integrity sha1-TwHhW/2jNS/NjvkEnxPYRIlxolg=
+  dependencies:
+    zrender "^3.1.3"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -4579,6 +4586,13 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+native-echarts@^0.5.0:
+  version "0.5.0"
+  resolved "http://registry.npm.taobao.org/native-echarts/download/native-echarts-0.5.0.tgz#611382db27e48ae66cfda733cdf06b85a10b8abc"
+  integrity sha1-YROC2yfkiuZs/aczzfBrhaELirw=
+  dependencies:
+    echarts "3.2.3"
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -5181,7 +5195,7 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz?cache=0&other_urls=http%3A%2F%2Fregistry.npm.taobao.org%2Fprop-types%2Fdownload%2Fprop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -5306,6 +5320,14 @@ react-lifecycles-compat@^3.0.4:
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
+react-native-charts-wrapper@^0.5.2:
+  version "0.5.2"
+  resolved "http://registry.npm.taobao.org/react-native-charts-wrapper/download/react-native-charts-wrapper-0.5.2.tgz#5d1e4d59275601e75496e3308b892c23367e3061"
+  integrity sha1-XR5NWSdWAedUluMwi4ksIzZ+MGE=
+  dependencies:
+    prop-types "^15.5.10"
+    react "16.8.3"
+
 react-native-gesture-handler@^1.1.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.1.0.tgz#2a7d545ad2e0ca23adce22b2af441ad360ecccee"
@@ -5382,13 +5404,6 @@ react-native-scroller@0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/react-native-scroller/download/react-native-scroller-0.0.6.tgz#dea8c89bd1ca2d2445fbb6b3a90960df6c1767ff"
   integrity sha1-3qjIm9HKLSRF+7azqQlg32wXZ/8=
-
-react-native-step-indicator@^0.0.11:
-  version "0.0.11"
-  resolved "http://registry.npm.taobao.org/react-native-step-indicator/download/react-native-step-indicator-0.0.11.tgz#18c53692f63c5e6812f80e8f6cc580cf4097e127"
-  integrity sha1-GMU2kvY8XmgS+A6PbMWAz0CX4Sc=
-  dependencies:
-    prop-types "^15.6.0"
 
 react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   version "1.3.4"
@@ -5561,6 +5576,16 @@ react@16.6.3:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.11.2"
+
+react@16.8.3:
+  version "16.8.3"
+  resolved "http://registry.npm.taobao.org/react/download/react-16.8.3.tgz#c6f988a2ce895375de216edcfaedd6b9a76451d9"
+  integrity sha1-xvmIos6JU3XeIW7c+u3WuadkUdk=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.13.3"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
@@ -5906,6 +5931,14 @@ scheduler@^0.11.2:
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.3.tgz#b5769b90cf8b1464f3f3cfcafe8e3cd7555a2d6b"
   integrity sha512-i9X9VRRVZDd3xZw10NY5Z2cVMbdYg6gqFecfj79USv1CFN+YrJ3gIPRKf1qlY+Sxly4djoKdfx1T+m9dnRB8kQ==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.13.3:
+  version "0.13.6"
+  resolved "http://registry.npm.taobao.org/scheduler/download/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
+  integrity sha1-RmpOwzJGezGpG5v3TlNHBy5M2Ik=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -6947,3 +6980,8 @@ zen-observable@^0.8.0:
   version "0.8.13"
   resolved "http://registry.npm.taobao.org/zen-observable/download/zen-observable-0.8.13.tgz#a9f1b9dbdfd2d60a08761ceac6a861427d44ae2e"
   integrity sha1-qfG529/S1goIdhzqxqhhQn1Eri4=
+
+zrender@^3.1.3:
+  version "3.7.4"
+  resolved "http://registry.npm.taobao.org/zrender/download/zrender-3.7.4.tgz#f847d53948481ef6d42906d1ea9aeec7acbefdf2"
+  integrity sha1-+EfVOUhIHvbUKQbR6prux6y+/fI=

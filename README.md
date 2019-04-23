@@ -31,6 +31,8 @@ tips: 运行docker-compose up -d之前，最好配置下国内的docker镜像库
 
 9. 连接上Android手机或者打开Android虚拟机，在根目录进行 react-native run-android 可以进行应用安装
 
+10. 在chart目录中，如果你安装了http-server（没安装的话，npm install http-server -g）,运行http-server -p 9898，然后就可以浏览器打开localhost:9898查看整个schema结构关系
+
 技术栈：
 
 Frontend:
@@ -50,6 +52,8 @@ react-navigation（路由）
 @react-native-community/async-storage（客户端存储）
 
 react-native-pose（动画）
+
+react-native-charts-wrapper（图表）
 
 prisma
 

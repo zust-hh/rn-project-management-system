@@ -61,8 +61,10 @@ export default class UserHome extends React.Component {
         const { navigate } = this.props.navigation;
         const { type, name, memberProjects } = data
         let doingProject = [];
+        let abnormalProject = [];
         memberProjects.map((project) => {
             if (project.state === 1) doingProject.push(project)
+            if (project.state === 2) abnormalProject.push(project)
         })
         switch (type) {
             case 0: return <ImageBackground
@@ -168,27 +170,71 @@ export default class UserHome extends React.Component {
                     </View>
                 </ImageBackground>
                 <View styleName="horizontal h-center" style={{ width: windowWidth - 48, height: 140, position: 'absolute', top: 42, left: 24 }}>
-                    <View style={{ backgroundColor: "red", width: (windowWidth - 48) / 3, height: 140 }}><Text>异常</Text></View>
-                    <View style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}><Text>进行中</Text></View>
-                    <View style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}><Text>全部</Text></View>
+                <Button
+                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                        onPress={() => navigate('UserProjectList', {
+                            page: 'UserHomeScreen',
+                            projectList: abnormalProject
+                        })}
+                    >
+                        <Text>{abnormalProject.length}</Text>
+                        <Text>异常</Text>
+                    </Button>
+                    <Button
+                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                        onPress={() => navigate('UserProjectList', {
+                            page: 'UserHomeScreen',
+                            projectList: doingProject
+                        })}
+                    >
+                        <Text>{doingProject.length}</Text>
+                        <Text>进行中</Text>
+                    </Button>
+                    <Button
+                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                        onPress={() => navigate('UserProjectList', {
+                            page: 'UserHomeScreen',
+                            projectList: memberProjects
+                        })}
+                    >
+                        <Text>{memberProjects.length}</Text>
+                        <Text>全部</Text>
+                    </Button>
                 </View>
                 <View style={{ marginTop: 60 }}>
-                    <View><Text>最近项目</Text></View>
-                    <View>
-                        <ScrollView
-                            horizontal={true}
+                    <View><Text>图表中心</Text></View>
+                    <View styleName="horizontal">
+                        <Button
+                            style={{ backgroundColor: "red", width: (windowWidth - 48) / 3, height: 140 }}
+                            onPress={() => {
+                                navigate('AdminChart', {
+                                    type: 0
+                                })
+                            }}
                         >
-                            {
-                                memberProjects.map((project) => this.renderGridProjectCard(project))
-                            }
-                        </ScrollView>
+                            <Text>学院项目表</Text>
+                        </Button>
+                        <Button
+                            style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}
+                            onPress={() => {
+                                navigate('AdminChart', {
+                                    type: 1
+                                })
+                            }}
+                        >
+                            <Text>项目状态占比图</Text>
+                        </Button>
+                        <Button
+                            style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}
+                            onPress={() => {
+                                navigate('AdminChart', {
+                                    type: 2
+                                })
+                            }}
+                        >
+                            <Text>项目参与数前十</Text>
+                        </Button>
                     </View>
-                    <View><Text>个人中心</Text></View>
-                    <GridRow columns={3}>
-                        <View style={{ backgroundColor: "red", width: (windowWidth - 48) / 3, height: 140 }}><Text>我的收藏</Text></View>
-                        <View style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}><Text>我的信息</Text></View>
-                        <View style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}><Text>我的关注</Text></View>
-                    </GridRow>
                 </View>
             </View>
         }

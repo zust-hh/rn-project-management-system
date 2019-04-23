@@ -11,6 +11,7 @@ import MyMessage from '../screens/MyMessage';
 import NewMessage from '../screens/NewMessage';
 import UserProjectList from '../screens/UserProjectList';
 import ProjectDetail from '../screens/ProjectDetail';
+import AdminChart from '../screens/AdminChart';
 
 import { Icon, TabBar } from '../components';
 
@@ -71,6 +72,9 @@ export const AppRouter = createStackNavigator(
     },
     ProjectDetail: {
       screen: ProjectDetail
+    },
+    AdminChart: {
+      screen: AdminChart
     }
   },
   {

@@ -11,6 +11,7 @@ import MyMessage from './MyMessage';
 import NewMessage from './NewMessage';
 import UserProjectList from './UserProjectList';
 import ProjectDetail from './ProjectDetail';
+import AdminChart from './AdminChart';
 
 export const ProjectListScreen = <ProjectList />;
 export const SearchScreen = <ProjectList />;
@@ -25,3 +26,4 @@ export const MyMessageScreen = <MyMessage />;
 export const NewMessageScreen = <NewMessage />;
 export const UserProjectListScreen = <UserProjectList />;
 export const ProjectDetailScreen = <ProjectDetail />;
+export const AdminChartScreen = <AdminChart />;
