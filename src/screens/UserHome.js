@@ -3,13 +3,19 @@ import {
     Dimensions,
     ScrollView
 } from "react-native";
-import { NavigationBar, Title, ImageBackground, Screen, Button, View, Text, Row, TouchableOpacity, GridRow } from '@shoutem/ui';
+import { NavigationBar, Title, ImageBackground, Screen, Button, View, Text, Row, TouchableOpacity, GridRow, Image } from '@shoutem/ui';
 import { SwitchNavigator } from 'react-navigation';
 import Login from './Login';
 import { Query } from 'react-apollo';
 import gql from '../gql';
 
 const windowWidth = Dimensions.get("window").width;
+const chart1 = require('../static/chart1.png');
+const chart2 = require('../static/chart2.png');
+const chart3 = require('../static/chart3.png');
+const userFavorite = require('../static/favorite-user.png');
+const userFollow = require('../static/follow-user.png');
+const userMessage = require('../static/message-user.png');
 
 export default class UserHome extends React.Component {
     static navigationOptions = {
@@ -37,7 +43,7 @@ export default class UserHome extends React.Component {
 
         return (
             <TouchableOpacity
-                style={{ width: 140, height: 140 }}
+                style={{ width: 120, height: 110, paddingLeft: 12 }}
                 key={index}
                 onPress={() => navigate('ProjectDetail', {
                     page: 'UserHomeScreen',
@@ -45,14 +51,14 @@ export default class UserHome extends React.Component {
                 })}
             >
                 <ImageBackground
-                    style={{ width: 140, height: 80 }}
+                    style={{ width: 108, height: 70 }}
                     source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
                 >
-                    <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-                        <Text style={{ color: 'white' }}>已完成{completNum / stepsLength * 100}%</Text>
+                    <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: 5 }}>
+                        <Text style={{ color: 'white', fontSize: 10 }}>已完成{completNum / stepsLength * 100}%</Text>
                     </View>
                 </ImageBackground>
-                <Text style={{ width: 130 }} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
+                <Text style={{ width: 120, color: 'black', marginTop: 6, fontSize: 12 }} numberOfLines={1} ellipsizeMode='tail'>{name}</Text>
             </TouchableOpacity>
         )
     }
@@ -90,37 +96,39 @@ export default class UserHome extends React.Component {
             case 2:
             case 1: return <View>
                 <ImageBackground
-                    styleName="large-ultra-wide"
+                    style={{ width: windowWidth, height: 90 }}
                     source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
                 >
                     <View style={{ position: 'absolute', top: 12, left: 12 }}>
-                        <Text>{name}</Text>
+                        <Text style={{ color: 'white' }}>{name}</Text>
                     </View>
                 </ImageBackground>
-                <View styleName="horizontal h-center" style={{ width: windowWidth - 48, height: 140, position: 'absolute', top: 42, left: 24 }}>
-                    <Button
-                        style={{ width: (windowWidth - 48) / 2, height: 140 }}
+                <View styleName="horizontal v-center" style={{ width: windowWidth - 48, height: 100, position: 'absolute', top: 42, left: 24, backgroundColor: 'white', borderRadius: 10, elevation: 10, }}>
+                    <TouchableOpacity
+                        styleName="vertical h-center v-center"
+                        style={{ width: (windowWidth - 48) / 2 - 1, height: 100, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
                             projectList: doingProject
                         })}
                     >
-                        <Text>{doingProject.length}</Text>
+                        <Text style={{ fontSize: 20 }}>{doingProject.length}</Text>
                         <Text>进行中</Text>
-                    </Button>
-                    <Button
-                        style={{ width: (windowWidth - 48) / 2, height: 140 }}
+                    </TouchableOpacity>
+                    <View style={{ width: 2, height: 40, backgroundColor: 'rgb(210, 210, 210)' }}></View>
+                    <TouchableOpacity
+                        style={{ width: (windowWidth - 48) / 2, height: 100, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
                             projectList: memberProjects
                         })}
                     >
-                        <Text>{memberProjects.length}</Text>
+                        <Text style={{ fontSize: 20 }}>{memberProjects.length}</Text>
                         <Text>全部</Text>
-                    </Button>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 60 }}>
-                    <View><Text>最近项目</Text></View>
+                <View style={{ paddingTop: 70, backgroundColor: 'white', paddingLeft: 12, paddingRight: 12 }}>
+                    <View style={{ marginBottom: 8 }} ><Text style={{ color: 'black', fontSize: 16 }}>最近项目</Text></View>
                     <View>
                         <ScrollView
                             horizontal={true}
@@ -130,33 +138,47 @@ export default class UserHome extends React.Component {
                             }
                         </ScrollView>
                     </View>
-                    <View><Text>个人中心</Text></View>
+                </View>
+                <View style={{ marginTop: 18, backgroundColor: 'white', padding: 12, height: 240 }}>
+                    <View style={{ marginBottom: 8 }} ><Text style={{ color: 'black', fontSize: 16 }}>个人中心</Text></View>
                     <View styleName="horizontal">
-                        <Button
-                            style={{ backgroundColor: "red", width: (windowWidth - 48) / 3, height: 140 }}
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => navigate('MyFavorite', {
                                 page: 'UserHomeScreen',
                             })}
                         >
-                            <Text>我的收藏</Text>
-                        </Button>
-                        <Button
-                            style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={userFavorite}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>我的收藏</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => navigate('MyFollow', {
+                                page: 'UserHomeScreen',
+                            })}
+                        >
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={userFollow}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>我的关注</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => navigate('MyMessage', {
                                 page: 'UserHomeScreen',
                                 userType: type
                             })}
                         >
-                            <Text>我的消息</Text>
-                        </Button>
-                        <Button
-                            style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}
-                            onPress={() => navigate('MyFollow', {
-                                page: 'UserHomeScreen',
-                            })}
-                        >
-                            <Text>我的关注</Text>
-                        </Button>
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={userMessage}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>我的消息</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -170,7 +192,7 @@ export default class UserHome extends React.Component {
                     </View>
                 </ImageBackground>
                 <View styleName="horizontal h-center" style={{ width: windowWidth - 48, height: 140, position: 'absolute', top: 42, left: 24 }}>
-                <Button
+                    <Button
                         style={{ width: (windowWidth - 48) / 3, height: 140 }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
@@ -204,36 +226,48 @@ export default class UserHome extends React.Component {
                 <View style={{ marginTop: 60 }}>
                     <View><Text>图表中心</Text></View>
                     <View styleName="horizontal">
-                        <Button
-                            style={{ backgroundColor: "red", width: (windowWidth - 48) / 3, height: 140 }}
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => {
                                 navigate('AdminChart', {
                                     type: 0
                                 })
                             }}
                         >
-                            <Text>学院项目表</Text>
-                        </Button>
-                        <Button
-                            style={{ backgroundColor: "blue", width: (windowWidth - 48) / 3, height: 140 }}
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={chart1}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>学院项目表</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => {
                                 navigate('AdminChart', {
                                     type: 1
                                 })
                             }}
                         >
-                            <Text>项目状态占比图</Text>
-                        </Button>
-                        <Button
-                            style={{ backgroundColor: "green", width: (windowWidth - 48) / 3, height: 140 }}
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={chart2}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>项目状态占比图</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => {
                                 navigate('AdminChart', {
                                     type: 2
                                 })
                             }}
                         >
-                            <Text>项目参与数前十</Text>
-                        </Button>
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={chart3}
+                            />
+                            <Text style={{ color: 'black', marginTop: 6, fontSize: 12 }}>项目参与数前十</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -246,14 +280,18 @@ export default class UserHome extends React.Component {
             <Screen style={{ marginTop: 32 }} >
                 <NavigationBar
                     centerComponent={<Title>我的</Title>}
-                    rightComponent={<TouchableOpacity onPress={() => this.props.navigation.navigate('Login', {
-                        callBack: (userType, userId) => {
-                            this.setState({
-                                userType,
-                                userId
-                            });
-                        }
-                    })}><Text>登出</Text></TouchableOpacity>}
+                    rightComponent={
+                        <Button onPress={() => this.props.navigation.navigate('Login', {
+                            callBack: (userType, userId) => {
+                                this.setState({
+                                    userType,
+                                    userId
+                                });
+                            }
+                        })}>
+                            <Text>登出</Text>
+                        </Button>
+                    }
                     styleName="inline"
                 />
                 <Query

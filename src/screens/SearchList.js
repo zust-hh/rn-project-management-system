@@ -27,8 +27,8 @@ export default class SearchList extends React.Component {
         return (
             <Screen style={{ marginTop: 32 }}>
                 <Tile styleName="clear">
-                    <View styleName="horizontal v-center" style={{ backgroundColor: 'white' }} >
-                        <Icon styleName="disclosure" name="left-arrow" onPress={() => goBack()} />
+                    <View styleName="horizontal v-center" style={{ backgroundColor: 'white', paddingLeft: 18 }} >
+                        <Icon styleName="disclosure" name="back" onPress={() => goBack()} />
                         <TextInput
                             style={{ flex: 1 }}
                             placeholder={"搜索项目名、介绍、人员"}

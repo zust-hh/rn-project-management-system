@@ -1,5 +1,5 @@
 import React from "react";
-import { Screen, View, Button, ListView, Text, NavigationBar, Title } from "@shoutem/ui";
+import { Screen, View, Button, ListView, Text, NavigationBar, Title, Icon } from "@shoutem/ui";
 import { Query } from "react-apollo";
 
 import gql from "../gql";
@@ -37,10 +37,13 @@ export default class MyMessage extends React.Component {
     }
 
     render() {
-        const { navigate, state } = this.props.navigation;
+        const { navigate, state, goBack } = this.props.navigation;
         return (
             <Screen style={{ marginTop: 32 }}>
                 <NavigationBar
+                    leftComponent={(
+                        <Icon styleName="disclosure" name="back" onPress={() => goBack()} />
+                    )}
                     centerComponent={
                         <Title>
                             我的信息

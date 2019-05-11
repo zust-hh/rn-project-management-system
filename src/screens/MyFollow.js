@@ -1,5 +1,5 @@
 import React from "react";
-import { Screen, View, ListView } from "@shoutem/ui";
+import { Screen, View, ListView, NavigationBar, Title, Icon, Button } from "@shoutem/ui";
 import { Query } from "react-apollo";
 import UserCard from '../components/UserCard';
 
@@ -15,8 +15,16 @@ export default class MyFollow extends React.Component {
     }
 
     render() {
+        const { goBack } = this.props.navigation;
         return (
             <Screen style={{ marginTop: 32 }}>
+                <NavigationBar
+                    leftComponent={(
+                        <Icon styleName="disclosure" name="back" onPress={() => goBack()} />
+                    )}
+                    centerComponent={<Title>我的关注</Title>}
+                    styleName="inline"
+                />
                 <View>
                     <Query
                         query={gql.USERFOLLOW_QUERY}

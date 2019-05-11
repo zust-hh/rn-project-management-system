@@ -1,5 +1,5 @@
 import React from "react";
-import { Screen, View, ListView } from "@shoutem/ui";
+import { Screen, View, ListView, NavigationBar, Title, Icon } from "@shoutem/ui";
 import { Query } from "react-apollo";
 import ProjectCard from '../components/ProjectCard';
 
@@ -15,8 +15,20 @@ export default class MyFavorite extends React.Component {
     }
 
     render() {
+        const { goBack } = this.props.navigation;
         return (
             <Screen style={{ marginTop: 32 }}>
+                <NavigationBar
+                    leftComponent={(
+                        <Icon styleName="disclosure" name="back" onPress={() => goBack()} />
+                    )}
+                    centerComponent={
+                        <Title>
+                            我的收藏
+                        </Title>
+                    }
+                    styleName="inline"
+                />
                 <View>
                     <Query
                         query={gql.USERFAVORITE_QUERY}
