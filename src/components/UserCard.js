@@ -1,7 +1,14 @@
 import React from "react";
-import { Row, Icon, Divider, View, Text } from '@shoutem/ui';
+import {
+  Dimensions
+} from 'react-native';
+import { Row, Icon, Divider, View, Text, TouchableOpacity, Image } from '@shoutem/ui';
 import { Mutation } from 'react-apollo';
 import gql from '../gql';
+const windowWidth = Dimensions.get("window").width;
+
+const followImage = require('../static/follow.png')
+const followonImage = require('../static/followon.png')
 
 // 关注之后的更新
 _updateCacheAfterFollow = (store, followUserId) => {
@@ -21,10 +28,11 @@ _updateCacheAfterFollow = (store, followUserId) => {
 
 const UserCard = (data) => {
   return (
+    data.name !== 'Admin' ?
     <View>
       {
         data.length !== 0 ?
-          <Row styleName="small">
+          <View styleName="horizontal v-center space-between" style={{ height: 50, width: windowWidth, backgroundColor: 'white', paddingLeft: 12, paddingRight: 12 }} >
             <Text style={{ color: 'black' }}>{data.name}</Text>
             <Text style={{ color: 'black' }}>{data.class}</Text>
             {
@@ -36,18 +44,24 @@ const UserCard = (data) => {
                 }
               >
                 {mutation => (
-                  <Icon
-                    styleName="disclosure"
-                    name="left-arrow"
-                    onPress={mutation} />
+                  <TouchableOpacity
+                    onPress={mutation}
+                  >
+                    <Image
+                      style={{ height: 30, width: 30 }}
+                      source={followImage}
+                    />
+                  </TouchableOpacity>
                 )}
-              </Mutation> : null
+              </Mutation> : <Image
+                      style={{ height: 30, width: 30 }}
+                      source={followonImage}
+                    />
             }
-
-          </Row> : null
+          </View> : null
       }
       <Divider styleName="line" />
-    </View>
+    </View> : null
   );
 }
 

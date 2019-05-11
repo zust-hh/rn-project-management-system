@@ -71,3 +71,7 @@ jsonwebtoken  生成token
 
 
 docker（prisma本地服务）
+
+待解决的bug
+
+1. follow 

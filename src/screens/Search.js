@@ -1,12 +1,16 @@
 import React from "react";
-import { NavigationBar, Title, ImageBackground, ListView, Tile, Subtitle, Divider, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
-import { SwitchNavigator } from 'react-navigation';
-import Login from './Login';
+import {
+    Dimensions
+} from 'react-native';
+import { Image, ListView, Tile, Screen, Button, View, TextInput, Text } from '@shoutem/ui';
 import { Query } from 'react-apollo';
 import ProjectCard from '../components/ProjectCard';
 import { findInArray, _subscribeToUpdateProjects } from './utils'
 
 import gql from '../gql';
+
+const windowWidth = Dimensions.get("window").width;
+const HotImage = require('../static/hot.png')
 
 export default class Search extends React.Component {
     static navigationOptions = {
@@ -23,18 +27,30 @@ export default class Search extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <Screen style={{ marginTop: 32 }} >
-                <TextInput
-                    placeholder={"搜索项目名、介绍、人员"}
-                />
+                <View style={{ backgroundColor: 'rgb(56,162,220)' }}>
+                    <TextInput
+                        style={{ backgroundColor: 'rgb(56,162,220)', color: 'white' }}
+                        value={"搜索项目名、介绍、人员"}
+                    />
+                </View>
                 <Button
-                    style={{ opacity: 0, height: 55, width: 300, position: 'absolute', top: 0 }}
+                    activeOpacity={0}
+                    style={{ opacity: 0, height: 55, width: 300, position: 'absolute', top: 0, backgroundColor: 'rgb(56,162,220)' }}
                     onPress={() => navigate('SearchList')}
                 />
                 <Tile
                     styleName="clear"
+                    style={{ marginTop: 12 }}
                 >
-                    <View>
-                        <Text>热门</Text>
+                    <View
+                        styleName="horizontal"
+                        style={{ backgroundColor: 'white', paddingLeft: 10, paddingTop: 8, paddingBottom: 8, width: windowWidth, marginRight: 12 }}
+                    >
+                        <Image
+                            style={{ width: 24, height: 24 }}
+                            source={HotImage}
+                        />
+                        <Text>热门项目</Text>
                     </View>
                     <Query
                         query={gql.HOTPROJECTLIST_QUERY}

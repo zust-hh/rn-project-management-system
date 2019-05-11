@@ -25,68 +25,66 @@ export default class SearchList extends React.Component {
         const { navigate, goBack } = this.props.navigation;
         const { searchText } = this.state;
         return (
-            <Screen style={{ marginTop: 32 }} >
+            <Screen style={{ marginTop: 32 }}>
                 <Tile styleName="clear">
-                    <Row styleName="small">
+                    <View styleName="horizontal v-center" style={{ backgroundColor: 'white' }} >
                         <Icon styleName="disclosure" name="left-arrow" onPress={() => goBack()} />
                         <TextInput
                             style={{ flex: 1 }}
                             placeholder={"搜索项目名、介绍、人员"}
                             onChangeText={value => this.setState({ searchText: value })}
                         />
-                    </Row>
-                    <View>
-                        <Query
-                            query={gql.SEARCHUSERLIST_QUERY}
-                            variables={{ searchText }}
-                        >
-                            {({ loading, error, data, subscribeToMore }) => {
-                                _subscribeToUpdateUsers(subscribeToMore)
-                                if (data && data.userList && data.userList.users.length > 0) {
-                                    const { users, myFollowUsers } = data.userList;
-                                    users.map((user) => {
-                                        user.showFollow = !findInArray(user, myFollowUsers);
-                                    })
-                                } else {
-                                    data.userList = {}
-                                    data.userList.users = []
-                                }
-
-                                return (
-                                    <ListView
-                                        loading={loading}
-                                        data={loading ? [] : data.userList.users}
-                                        renderRow={UserCard}
-                                    />
-                                )
-                            }}
-                        </Query>
-                        <Query
-                            query={gql.SEARCHPROJECTLIST_QUERY}
-                            variables={{ searchText }}
-                        >
-                            {({ loading, error, data, subscribeToMore }) => {
-                                _subscribeToUpdateProjects(subscribeToMore)
-                                if (data && data.projectList && data.projectList.projects.length > 0) {
-                                    const { projects, myFavoriteProjects } = data.projectList;
-                                    projects.map((project) => {
-                                        project.showFavorite = !findInArray(project, myFavoriteProjects);
-                                    })
-                                } else {
-                                    data.projectList = {}
-                                    data.projectList.projects = []
-                                }
-
-                                return (
-                                    <ListView
-                                        loading={loading}
-                                        data={loading ? [] : data.projectList.projects}
-                                        renderRow={ProjectCard}
-                                    />
-                                )
-                            }}
-                        </Query>
                     </View>
+                    {
+                        searchText ? 
+                        <View style={{ marginTop: 12 }}>
+                            <Query
+                                query={gql.SEARCHUSERLIST_QUERY}
+                                variables={{ searchText }}
+                            >
+                                {({ loading, error, data, subscribeToMore }) => {
+                                    _subscribeToUpdateUsers(subscribeToMore)
+                                    if (data && data.userList && data.userList.users.length > 0) {
+                                        const { users, myFollowUsers } = data.userList;
+                                        users.map((user) => {
+                                            user.showFollow = !findInArray(user, myFollowUsers);
+                                        })
+                                    } else {
+                                        data.userList = {}
+                                        data.userList.users = []
+                                    }
+
+                                    return (
+                                        loading ? [] : <View style={{ marginBottom: 12 }}>{data.userList.users.map(user => UserCard(user) )}</View>
+                                    )
+                                }}
+                            </Query>
+                            <Query
+                                query={gql.SEARCHPROJECTLIST_QUERY}
+                                variables={{ searchText }}
+                            >
+                                {({ loading, error, data, subscribeToMore }) => {
+                                    _subscribeToUpdateProjects(subscribeToMore)
+                                    if (data && data.projectList && data.projectList.projects.length > 0) {
+                                        const { projects, myFavoriteProjects } = data.projectList;
+                                        projects.map((project) => {
+                                            project.showFavorite = !findInArray(project, myFavoriteProjects);
+                                        })
+                                    } else {
+                                        data.projectList = {}
+                                        data.projectList.projects = []
+                                    }
+
+                                    return (
+                                        <ListView
+                                            data={loading ? [] : data.projectList.projects}
+                                            renderRow={ProjectCard}
+                                        />
+                                    )
+                                }}
+                            </Query>
+                        </View> : null
+                    }
                 </Tile>
             </Screen>
         );
