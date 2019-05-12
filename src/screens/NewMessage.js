@@ -42,11 +42,12 @@ export default class NewMessage extends React.Component {
 
     renderUserIcon = (user, index) => {
         return (
-            <View styleName="horizontal" key={index} style={{ marginRight: 12, padding: 10 }}>
+            <View styleName="horizontal" key={index} style={{ marginRight: 12, padding: 10, borderStyle: 'solid', borderWidth: 1, borderColor: 'grey', borderRadius: 5 }}>
                 <Text>{user.name}</Text>
                 <Icon
+                    style={{ marginLeft: 8 }}
                     styleName="disclosure"
-                    name="left-arrow"
+                    name="clear-text"
                     onPress={() => this.deleteUser(index)} />
             </View>
         )
@@ -54,20 +55,20 @@ export default class NewMessage extends React.Component {
 
     renderUserList = (data) => {
         return (
-            <View style={{ width: windowWidth }}>
-                {
-                    data.length !== 0 ?
-                        <Row styleName="small" style={{ width: windowWidth }}>
-                            <Text style={{ color: 'black' }}>{data.name}</Text>
-                            <Text style={{ color: 'black' }}>{data.class}</Text>
-                            <Icon
-                                styleName="disclosure"
-                                name="left-arrow"
-                                onPress={() => this.addUser(data)} />
-                        </Row> : null
-                }
-                <Divider styleName="line" />
-            </View>
+            data.name !== 'Admin' ?
+                <View styleName="horizontal v-center space-between" style={{ height: 50, width: windowWidth, backgroundColor: 'white', paddingLeft: 12, paddingRight: 12 }} >
+                    {
+                        data.length !== 0 ?
+                            <Row styleName="small" style={{ width: windowWidth - 30, paddingRight: 16 }}>
+                                <Text style={{ color: 'black' }}>{data.name}</Text>
+                                <Text style={{ color: 'black' }}>{data.class}</Text>
+                                <Icon
+                                    styleName="disclosure"
+                                    name="add-friend"
+                                    onPress={() => this.addUser(data)} />
+                            </Row> : null
+                    }
+                </View> : null
         )
     }
 
@@ -146,12 +147,10 @@ export default class NewMessage extends React.Component {
                             </Query>
                         </View> : null
                     }
-                    <View styleName="horizontal" style={{ width: windowWidth, marginTop: 12 }}>
-                        <GridRow columns={3}>
-                            {
-                                this.state.sendUserList.map((user, index) => this.renderUserIcon(user, index))
-                            }
-                        </GridRow>
+                    <View styleName="horizontal" style={{ width: windowWidth, marginTop: 12, paddingLeft: 16 }}>
+                        {
+                            this.state.sendUserList.map((user, index) => this.renderUserIcon(user, index))
+                        }
                     </View>
                 </Tile>
             </Screen>

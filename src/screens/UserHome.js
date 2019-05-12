@@ -184,47 +184,51 @@ export default class UserHome extends React.Component {
             </View>
             case 3: return <View>
                 <ImageBackground
-                    styleName="large-ultra-wide"
+                    style={{ width: windowWidth, height: 90 }}
                     source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
                 >
                     <View style={{ position: 'absolute', top: 12, left: 12 }}>
-                        <Text>{name}</Text>
+                        <Text style={{ color: 'white' }}>{name}</Text>
                     </View>
                 </ImageBackground>
-                <View styleName="horizontal h-center" style={{ width: windowWidth - 48, height: 140, position: 'absolute', top: 42, left: 24 }}>
-                    <Button
-                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                <View styleName="horizontal v-center" style={{ width: windowWidth - 48, height: 100, position: 'absolute', top: 42, left: 24, backgroundColor: 'white', borderRadius: 10, elevation: 10, }}>
+                    <TouchableOpacity
+                        styleName="vertical h-center v-center"
+                        style={{ width: (windowWidth - 48) / 3 - 2, height: 100, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
                             projectList: abnormalProject
                         })}
                     >
-                        <Text>{abnormalProject.length}</Text>
+                        <Text style={{ fontSize: 20 }}>{abnormalProject.length}</Text>
                         <Text>异常</Text>
-                    </Button>
-                    <Button
-                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                    </TouchableOpacity>
+                    <View style={{ width: 2, height: 40, backgroundColor: 'rgb(210, 210, 210)' }}></View>
+                    <TouchableOpacity
+                        styleName="vertical h-center v-center"
+                        style={{ width: (windowWidth - 48) / 3 - 2, height: 100, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
                             projectList: doingProject
                         })}
                     >
-                        <Text>{doingProject.length}</Text>
+                        <Text style={{ fontSize: 20 }}>{doingProject.length}</Text>
                         <Text>进行中</Text>
-                    </Button>
-                    <Button
-                        style={{ width: (windowWidth - 48) / 3, height: 140 }}
+                    </TouchableOpacity>
+                    <View style={{ width: 2, height: 40, backgroundColor: 'rgb(210, 210, 210)' }}></View>
+                    <TouchableOpacity
+                        style={{ width: (windowWidth - 48) / 3, height: 100, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => navigate('UserProjectList', {
                             page: 'UserHomeScreen',
                             projectList: memberProjects
                         })}
                     >
-                        <Text>{memberProjects.length}</Text>
+                        <Text style={{ fontSize: 20 }}>{memberProjects.length}</Text>
                         <Text>全部</Text>
-                    </Button>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 60 }}>
-                    <View><Text>图表中心</Text></View>
+                <View style={{ paddingTop: 70, backgroundColor: 'white', paddingLeft: 12, paddingRight: 12, height: 240 }}>
+                    <View style={{ marginBottom: 8 }} ><Text style={{ color: 'black', fontSize: 16 }}>图表中心</Text></View>
                     <View styleName="horizontal">
                         <TouchableOpacity
                             style={{ width: (windowWidth - 48) / 3, height: 90, justifyContent: 'center', alignItems: 'center' }}

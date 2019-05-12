@@ -1,8 +1,12 @@
 import React from "react";
-import { Screen, View, Button, ListView, Text, NavigationBar, Title, Icon } from "@shoutem/ui";
+import { Screen, View, Button, ListView, Text, NavigationBar, Title, Icon, Image } from "@shoutem/ui";
 import { Query } from "react-apollo";
+import LinearGradient from 'react-native-linear-gradient';
 
 import gql from "../gql";
+
+const message1 = require('../static/message1.png');
+const message2 = require('../static/message2.png');
 
 export default class MyMessage extends React.Component {
     static navigationOptions = {
@@ -25,13 +29,35 @@ export default class MyMessage extends React.Component {
     }
 
     renderMessageCard = (data) => {
+        const random = Math.round(Math.random());
         return (
-            <View style={data.unreadState ? { backgroundColor: "red" } : null}>
-                <View styleName="horizontal space-between">
-                    <Text>{data.addBy.name}</Text>
-                    <Text>{data.createdAt}</Text>
+            <View style={{ height: 80, padding: 12 }} styleName="horizontal v-start">
+                {
+                    random ? <LinearGradient colors={['#FF9800', '#EF6C00']} style={{ height: 56, width: 56, borderRadius: 30, alignItems: 'center', justifyContent: 'center' }}>
+                        <Image
+                            style={{ height: 30, width: 30 }}
+                            source={message1}
+                        />
+                        {
+                            data.unreadState ? <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "red", position: 'absolute', top: 5, right: 5 }}></View> : null
+                        }
+                    </LinearGradient> : <LinearGradient colors={['#B2DFDB', '#4DB6AC']} style={{ height: 56, width: 56, borderRadius: 30, alignItems: 'center', justifyContent: 'center' }}>
+                            <Image
+                                style={{ height: 24, width: 24 }}
+                                source={message2}
+                            />
+                            {
+                                data.unreadState ? <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "red", position: 'absolute', top: 5, right: 5 }}></View> : null
+                            }
+                        </LinearGradient>
+                }
+                <View>
+                    <View styleName="horizontal" style={{ width: 320, marginLeft: 12 }}>
+                        <Text style={{ fontSize: 18, color: 'black' }}>{data.addBy.name}</Text>
+                        <Text style={{ position: 'absolute', right: 0, fontSize: 12 }}>{data.createdAt.substr(0, 10)}</Text>
+                    </View>
+                    <Text style={{ fontSize: 12, marginLeft: 12, marginTop: 10 }}>{data.article}</Text>
                 </View>
-                <Text>{data.article}</Text>
             </View>
         )
     }
@@ -39,7 +65,7 @@ export default class MyMessage extends React.Component {
     render() {
         const { navigate, state, goBack } = this.props.navigation;
         return (
-            <Screen style={{ marginTop: 32 }}>
+            <Screen style={{ marginTop: 32, backgroundColor: 'white' }}>
                 <NavigationBar
                     leftComponent={(
                         <Icon styleName="disclosure" name="back" onPress={() => goBack()} />
@@ -92,17 +118,14 @@ export default class MyMessage extends React.Component {
                                     /> : null
                                 }
                                 <ListView
-                                    loading={loading}
                                     data={loading ? [] : data.getUserInfo.message}
                                     renderRow={this.renderMessageCard}
                                 />
                                 <ListView
-                                    loading={loading}
                                     data={loading ? [] : data.getUserInfo.unreadMessage}
                                     renderRow={this.renderMessageCard}
                                 />
                                 <ListView
-                                    loading={loading}
                                     data={loading ? [] : data.getUserInfo.readMessage}
                                     renderRow={this.renderMessageCard}
                                 />
