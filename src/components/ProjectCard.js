@@ -8,6 +8,10 @@ const shenImage = require('../static/shen.png');
 const xiaoImage = require('../static/xiao.png');
 const favoriteImage = require('../static/favorite.png')
 const favoriteonImage = require('../static/favoriteon.png')
+const project1Image = require('../static/project1.jpg')
+const project2Image = require('../static/project2.jpg')
+const project3Image = require('../static/project3.jpg')
+const project4Image = require('../static/project4.jpg')
 
 const typeIcon = [guoImage, shenImage, xiaoImage];
 
@@ -27,13 +31,23 @@ _updateCacheAfterCollection = (store, projectId) => {
   store.writeQuery({ query: gql.PROJECTLIST_QUERY, data })
 }
 
+projectImage = (type) => {
+  switch(type) {
+    case 1: return project1Image;
+    case 2: return project2Image;
+    case 3: return project3Image;
+    default: return project4Image
+  }
+}
+
 const ProjectCard = (data) => {
   return (
     <View>
       <ImageBackground
         styleName="large-banner"
-        source={{ uri: "https://shoutem.github.io/static/getting-started/restaurant-6.jpg" }}
+        source={this.projectImage(data.type)}
       >
+        <View style={{  }}></View>
         {
           data.length !== 0 ? <View styleName="space-between vertical fill-parent" style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: 24 }}>
             <View styleName="horizontal space-between">
@@ -50,7 +64,7 @@ const ProjectCard = (data) => {
                 <View styleName="horizontal">
                   <Text numberOfLines={2} style={{ color: 'white', width: 300, fontSize: 20, fontWeight: 'bold' }}>{data.name}</Text>
                 </View>
-                <Subtitle styleName="sm-gutter-horizontal" style={{ color: 'rgb(200,200,200)' }}>{data.description}</Subtitle>
+                <Subtitle numberOfLines={2} styleName="sm-gutter-horizontal" style={{ color: '#424242', width: 300 }}>{data.description}</Subtitle>
               </View>
               {
                 data.showFavorite ? <Mutation

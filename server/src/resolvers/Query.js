@@ -138,9 +138,44 @@ project = async (root, args, context, info) => {
     return project
 }
 
+test = async (root, args, context, info) => {
+    let where = args.filter ? {
+        OR: [
+            { name_contains: args.filter },
+            { idNumber_contains: args.filter },
+            {
+                addByProjects_some: {
+                    OR: [
+                        { description_contains: args.filter },
+                        { name_contains: args.filter },
+                    ],
+                }
+            }
+        ],
+    } : {};
+    let users = await context.prisma.users({
+        where,
+        skip: args.skip,
+        first: args.first,
+        orderBy: args.orderBy,
+    });
+    const count = await context.prisma
+        .usersConnection({
+            where,
+        })
+        .aggregate()
+        .count()
+
+    return {
+        users,
+        count
+    }
+}
+
 module.exports = {
     projectList,
     userList,
     getUserInfo,
-    project
+    project,
+    test
 }

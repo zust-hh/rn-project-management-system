@@ -37,7 +37,7 @@ const S = StyleSheet.create({
   spotLightInner: {
     width: 48,
     height: 48,
-    backgroundColor: "#ee0000",
+    backgroundColor: "#1e88e5",
     borderRadius: 24
   },
   scaler: { flex: 1, alignItems: "center", justifyContent: "center" }

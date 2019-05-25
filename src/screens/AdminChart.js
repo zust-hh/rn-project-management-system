@@ -36,8 +36,7 @@ export default class AdminChart extends React.Component {
                     values: [{ value: 3, label: '信息学院' },
                     { value: 1, label: '经管学院' },
                     { value: 1, label: '理学院' },
-                    { value: 1, label: '机械学院' },
-                    { value: 1, label: '安吉校区' }],
+                    { value: 1, label: '机械学院' }],
                     label: '学院示意',
                     config: {
                         colors: [processColor('#C0FF8C'), processColor('#FFF78C'), processColor('#FFD08C'), processColor('#8CEAFF'), processColor('#FF8C9D')],
@@ -52,10 +51,10 @@ export default class AdminChart extends React.Component {
                 }],
             }, {
                 dataSets: [{
-                    values: [{ y: [1, 2, 1] }, { y: [1] }, { y: [1] }, { y: [1] }],
+                    values: [{ y: [2, 1] }, { y: [1] }, { y: [1] }, { y: [1] }],
                     label: '状态示意',
                     config: {
-                        colors: [processColor('#C0FF8C'), processColor('#FFF78C'), processColor('#FFD08C')],
+                        colors: [processColor('#C0FF8C'), processColor('#FFF78C')],
                         stackLabels: ['已完成', '进行中', '异常']
                     }
                 }],

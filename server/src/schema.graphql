@@ -71,6 +71,11 @@ type UserList {
   count: Int!
 }
 
+type TestList {
+  users: [User!]!
+  count: Int!
+}
+
 enum UserOrderByInput {
   createdAt_ASC
   createdAt_DESC
@@ -100,6 +105,7 @@ type Query {
   project(id: String): Project!
   userList(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): UserList!
   getUserInfo(userId: String): User!
+  test(filter: String, skip: Int, first: Int, orderBy: UserOrderByInput): TestList!
 }
 
 type Mutation {

@@ -16,6 +16,7 @@ const chart3 = require('../static/chart3.png');
 const userFavorite = require('../static/favorite-user.png');
 const userFollow = require('../static/follow-user.png');
 const userMessage = require('../static/message-user.png');
+const project3Image = require('../static/project3.jpg')
 
 export default class UserHome extends React.Component {
     static navigationOptions = {
@@ -36,7 +37,7 @@ export default class UserHome extends React.Component {
         const stepsLength = steps.length
         let completNum = 0;
         steps.map((step) => {
-            if (step.state === 2) {
+            if (step.state === 3) {
                 completNum++
             }
         })
@@ -52,7 +53,7 @@ export default class UserHome extends React.Component {
             >
                 <ImageBackground
                     style={{ width: 108, height: 70 }}
-                    source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+                    source={index == 0 ? project3Image : { uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
                 >
                     <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: 5 }}>
                         <Text style={{ color: 'white', fontSize: 10 }}>已完成{completNum / stepsLength * 100}%</Text>
@@ -305,7 +306,7 @@ export default class UserHome extends React.Component {
                     {({ loading, error, data }) => {
                         if (loading) {
                             return (
-                                <Text>123</Text>
+                                <Text></Text>
                             )
                         }
                         return (

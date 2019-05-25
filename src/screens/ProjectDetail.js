@@ -12,6 +12,7 @@ import { _subscribeToUpdateProjects } from './utils'
 const completeImg = require('../static/complete.png');
 const uncompleteImg = require('../static/uncomplete.png');
 const pendingImg = require('../static/pending.png');
+const project3Image = require('../static/project3.jpg')
 const stateArr = [uncompleteImg, pendingImg, completeImg]
 
 export default class ProjectDetail extends React.Component {
@@ -71,7 +72,7 @@ export default class ProjectDetail extends React.Component {
                             // _subscribeToUpdateProjects(subscribeToMore)
                             if (loading) {
                                 return (
-                                    <Text>123</Text>
+                                    <Text></Text>
                                 )
                             } else {
                                 const { project } = data;
@@ -102,9 +103,9 @@ export default class ProjectDetail extends React.Component {
                                         <ImageBackground
                                             styleName="large-ultra-wide"
                                             style={{ marginBottom: 14 }}
-                                            source={{ uri: "https://i.loli.net/2019/03/22/5c948bca62fc7.jpg" }}
+                                            source={project3Image}
                                         >
-                                            <Text style={{ color: 'white', fontSize: 20 }}>{project.name}</Text>
+                                            <Text style={{ color: 'grey', fontSize: 20 }}>{project.name}</Text>
                                         </ImageBackground>
                                         {
                                             steps.map((step, index) => {
@@ -158,10 +159,10 @@ export default class ProjectDetail extends React.Component {
                                                                         </View> : <Text style={{ fontSize: 12, backgroundColor: '#eceff1', padding: 4, borderRadius: 20, color: 'grey' }}>{step.charge.name}</Text>
                                                                     }
                                                                     {
-                                                                        !editState && step.state === 2 ? <Text style={{ fontSize: 12, backgroundColor: '#ff9100', padding: 4, borderRadius: 20, color: 'white', marginLeft: 12 }}>已汇报2次</Text> : null
+                                                                        !editState && index == 3 ? <Text style={{ fontSize: 12, backgroundColor: '#ff9100', padding: 4, borderRadius: 20, color: 'white', marginLeft: 12 }}>汇报2次</Text> : null
                                                                     }
                                                                     {
-                                                                        !editState && step.state === 3 ? <Text style={{ fontSize: 12, backgroundColor: '#dd2c00', padding: 4, borderRadius: 20, color: 'white', marginLeft: 12 }}>超时两天</Text> : null
+                                                                        !editState && index == 4 ? <Text style={{ fontSize: 12, backgroundColor: 'rgb(32,178,170)', padding: 4, borderRadius: 20, color: 'white', marginLeft: 12 }}>提前两天</Text> : null
                                                                     }
                                                                 </View>
                                                             </View>
